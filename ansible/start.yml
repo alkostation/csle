@@ -25,3 +25,4 @@
     - name: Execute start scripts on the worker nodes
       command: "python /home/{{ user }}/csle/ansible/start_services.py {{ item }} {{ user }} {{ conda_environment_name }}"
       loop: "{{ groups['worker'] }}"
+      when: groups['worker'] is defined and groups['worker'] | length > 0
