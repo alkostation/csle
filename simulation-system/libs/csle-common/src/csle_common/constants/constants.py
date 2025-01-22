@@ -95,6 +95,8 @@ class CONTAINER_IMAGES:
     PGADMIN = "pgadmin"
     GRAFANA = "grafana"
 
+    WORDPRESS = "csle_wordpress_base"
+
 
 class CONTAINER_OS:
     """
@@ -130,6 +132,7 @@ class CONTAINER_OS:
     PENGINE_EXPLOIT_1_OS = "ubuntu"
     CVE_2014_0160_1_OS = "debian"
     SPARK_1_OS = "spark"
+    WORDPRESS_OS = "ubuntu"
 
 
 class RENDERING:
@@ -1618,7 +1621,7 @@ class METADATA_STORE:
     DBNAME = "csle"
     USER = "csle"
     PASSWORD = "csle"
-    HOST = "172.31.212.92"
+    HOST = "192.168.82.2"
     TRACES_PROPERTY = "traces"
     DB_NAME_PROPERTY = "dbname"
     PW_PROPERTY = "password"
