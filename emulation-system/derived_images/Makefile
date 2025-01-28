@@ -1,4 +1,4 @@
-DOCKERHUB_USER=kimham
+DOCKERHUB_USER=kthnse
 VERSION=0.7.0
 
 .PHONY: all build rm_image \

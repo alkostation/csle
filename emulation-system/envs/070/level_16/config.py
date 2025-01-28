@@ -393,7 +393,12 @@ def default_containers_config(network_id: int, level: int, version: str) -> Cont
         router_ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.10",
         ids_enabled=False,
         vulnerable_nodes=[],
-        agent_reachable_nodes=[],
+        agent_reachable_nodes=[
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.10",
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.30",
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.30",
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.32",
+        ],
         networks=[
             ContainerNetwork(
                 name=f"{constants.CSLE.CSLE_NETWORK_PREFIX}{network_id}_1",
@@ -827,111 +832,6 @@ def default_topology_config(network_id: int) -> TopologyConfig:
                                 input_accept=set([]),
                                 forward_accept=set(), output_drop=set(), input_drop=set(), routes=set(), forward_drop=set())
 
-    # node_23 = NodeFirewallConfig(hostname=f"{constants.CONTAINER_IMAGES.SAMBA_1}_23",
-    #                             ips_gw_default_policy_networks=[
-    #                                 DefaultNetworkFirewallConfig(
-    #                                     ip=None,
-    #                                     default_gw=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.20",
-    #                                     default_input=constants.FIREWALL.ACCEPT,
-    #                                     default_output=constants.FIREWALL.ACCEPT,
-    #                                     default_forward=constants.FIREWALL.DROP,
-    #                                     network=ContainerNetwork(
-    #                                         name="",
-    #                                         subnet_mask=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
-    #                                                     f"{network_id}{constants.CSLE.CSLE_LEVEL_SUBNETMASK_SUFFIX}",
-    #                                         subnet_prefix=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}",
-    #                                         bitmask=constants.CSLE.CSLE_BITMASK
-    #                                     )
-    #                                 ),
-    #                                 DefaultNetworkFirewallConfig(
-    #                                     ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.23",
-    #                                     default_gw=None,
-    #                                     default_input=constants.FIREWALL.ACCEPT,
-    #                                     default_output=constants.FIREWALL.ACCEPT,
-    #                                     default_forward=constants.FIREWALL.DROP,
-    #                                     network=ContainerNetwork(
-    #                                         name=f"{constants.CSLE.CSLE_NETWORK_PREFIX}{network_id}_2",
-    #                                         subnet_mask=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
-    #                                                     f"{network_id}.2{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
-    #                                         subnet_prefix=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}",
-    #                                         bitmask=constants.CSLE.CSLE_EDGE_BITMASK
-    #                                     )
-    #                                 ),
-    #                                 DefaultNetworkFirewallConfig(
-    #                                     ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}."
-    #                                     f"{collector_constants.KAFKA_CONFIG.NETWORK_ID_THIRD_OCTET}.23",
-    #                                     default_gw=None,
-    #                                     default_input=constants.FIREWALL.ACCEPT,
-    #                                     default_output=constants.FIREWALL.ACCEPT,
-    #                                     default_forward=constants.FIREWALL.DROP,
-    #                                     network=ContainerNetwork(
-    #                                         name=f"{constants.CSLE.CSLE_NETWORK_PREFIX}{network_id}_"
-    #                                             f"{collector_constants.KAFKA_CONFIG.NETWORK_ID_THIRD_OCTET}",
-    #                                         subnet_mask=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
-    #                                                     f"{network_id}.{collector_constants.KAFKA_CONFIG.NETWORK_ID_THIRD_OCTET}"
-    #                                                     f"{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
-    #                                         subnet_prefix=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}",
-    #                                         bitmask=constants.CSLE.CSLE_EDGE_BITMASK
-    #                                     )
-    #                                 )
-    #                             ],
-    #                             output_accept=set([]),
-    #                             input_accept=set([]),
-    #                             forward_accept=set(), output_drop=set(), input_drop=set(), routes=set(), forward_drop=set())
-
-    # node_24 = NodeFirewallConfig(hostname=f"{constants.CONTAINER_IMAGES.CLIENT_1}_24",
-    #                             ips_gw_default_policy_networks=[
-    #                                 DefaultNetworkFirewallConfig(
-    #                                     ip=None,
-    #                                     default_gw=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.20",
-    #                                     default_input=constants.FIREWALL.ACCEPT,
-    #                                     default_output=constants.FIREWALL.ACCEPT,
-    #                                     default_forward=constants.FIREWALL.DROP,
-    #                                     network=ContainerNetwork(
-    #                                         name="",
-    #                                         subnet_mask=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
-    #                                                     f"{network_id}{constants.CSLE.CSLE_LEVEL_SUBNETMASK_SUFFIX}",
-    #                                         subnet_prefix=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}",
-    #                                         bitmask=constants.CSLE.CSLE_BITMASK
-    #                                     )
-    #                                 ),
-    #                                 DefaultNetworkFirewallConfig(
-    #                                     ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.24",
-    #                                     default_gw=None,
-    #                                     default_input=constants.FIREWALL.ACCEPT,
-    #                                     default_output=constants.FIREWALL.ACCEPT,
-    #                                     default_forward=constants.FIREWALL.DROP,
-    #                                     network=ContainerNetwork(
-    #                                         name=f"{constants.CSLE.CSLE_NETWORK_PREFIX}{network_id}_2",
-    #                                         subnet_mask=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
-    #                                                     f"{network_id}.2{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
-    #                                         subnet_prefix=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}",
-    #                                         bitmask=constants.CSLE.CSLE_EDGE_BITMASK
-    #                                     )
-    #                                 ),
-    #                                 DefaultNetworkFirewallConfig(
-    #                                     ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}."
-    #                                     f"{collector_constants.KAFKA_CONFIG.NETWORK_ID_THIRD_OCTET}.24",
-    #                                     default_gw=None,
-    #                                     default_input=constants.FIREWALL.ACCEPT,
-    #                                     default_output=constants.FIREWALL.ACCEPT,
-    #                                     default_forward=constants.FIREWALL.DROP,
-    #                                     network=ContainerNetwork(
-    #                                         name=f"{constants.CSLE.CSLE_NETWORK_PREFIX}{network_id}_"
-    #                                             f"{collector_constants.KAFKA_CONFIG.NETWORK_ID_THIRD_OCTET}",
-    #                                         subnet_mask=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
-    #                                                     f"{network_id}.{collector_constants.KAFKA_CONFIG.NETWORK_ID_THIRD_OCTET}"
-    #                                                     f"{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
-    #                                         subnet_prefix=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}",
-    #                                         bitmask=constants.CSLE.CSLE_EDGE_BITMASK
-    #                                     )
-    #                                 )
-    #                             ],
-    #                             output_accept=set([]),
-    #                             input_accept=set([]),
-    #                             forward_accept=set(), output_drop=set(), input_drop=set(), routes=set(), forward_drop=set())
-
-
     node_30 = NodeFirewallConfig(hostname=f"{constants.CONTAINER_IMAGES.OVS_1}_30",
                                 ips_gw_default_policy_networks=[
                                     DefaultNetworkFirewallConfig(
@@ -1248,7 +1148,7 @@ def default_topology_config(network_id: int) -> TopologyConfig:
                             forward_accept=set(), output_drop=set(), input_drop=set(), forward_drop=set(),
                             routes=set())
     
-    
+
     
     node_configs = [node_10, node_20, node_30, node_31, node_191, node_11, node_33, node_32]
     topology = TopologyConfig(node_configs=node_configs,
@@ -1674,26 +1574,6 @@ def default_ovs_config(network_id: int, level: int, version: str) -> OVSConfig:
     :return: the default OVS config
     """
     ovs_config = OVSConfig(switch_configs=[
-    #     OvsSwitchConfig(
-    #         container_name=f"{constants.CSLE.NAME}-"
-    #                        f"{constants.CONTAINER_IMAGES.OVS_1}_2-{constants.CSLE.LEVEL}{level}",
-    #         ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.20",
-    #         controller_ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}."
-    #                       f"{ryu_constants.RYU.NETWORK_ID_THIRD_OCTET}.{ryu_constants.RYU.NETWORK_ID_FOURTH_OCTET}",
-    #         controller_port=ryu_constants.RYU.DEFAULT_PORT,
-    #         controller_transport_protocol=ryu_constants.RYU.DEFAULT_TRANSPORT_PROTOCOL,
-    #         openflow_protocols=[constants.OPENFLOW.OPENFLOW_V_1_3]
-    #     ),
-    #     OvsSwitchConfig(
-    #         container_name=f"{constants.CSLE.NAME}-"
-    #                        f"{constants.CONTAINER_IMAGES.OVS_1}_3-{constants.CSLE.LEVEL}{level}",
-    #         ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.30",
-    #         controller_ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}."
-    #                       f"{ryu_constants.RYU.NETWORK_ID_THIRD_OCTET}.{ryu_constants.RYU.NETWORK_ID_FOURTH_OCTET}",
-    #         controller_port=ryu_constants.RYU.DEFAULT_PORT,
-    #         controller_transport_protocol=ryu_constants.RYU.DEFAULT_TRANSPORT_PROTOCOL,
-    #         openflow_protocols=[constants.OPENFLOW.OPENFLOW_V_1_3]
-    #     )
     ])
     return ovs_config
 
