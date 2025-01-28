@@ -32,10 +32,10 @@ RUN service ssh start
 RUN git clone https://github.com/Limmen/vulscan scipag_vulscan &&\
     ln -s `pwd`/scipag_vulscan /usr/share/nmap/scripts/vulscan
 
-# NMAP nmap-vulners
-RUN git clone https://github.com/Limmen/nmap-vulners &&\
-    cp nmap-vulners/vulners.nse /usr/share/nmap/scripts/ &&\
-    nmap --script-updatedb
+# # NMAP nmap-vulners
+# RUN git clone https://github.com/Limmen/nmap-vulners &&\
+#     cp nmap-vulners/vulners.nse /usr/share/nmap/scripts/ &&\
+#     nmap --script-updatedb
 
 # SecLists
 RUN git clone https://github.com/Limmen/SecLists
@@ -143,6 +143,10 @@ RUN chmod 777 /pengine_exploit.sh
 # CVE-2014-0160 Exploit
 ADD docker_files/common/heartbleed_exploit.py /heartbleed_exploit.py
 RUN chmod 777 /heartbleed_exploit.py
+
+# CVE-2020-24186 Wordpress wpDiscuz plugin Exploit
+ADD docker_files/common/wpDiscuz_RemoteCodeExec.py /wpDiscuz_RemoteCodeExec.py
+RUN chmod 777 /wpDiscuz_RemoteCodeExec.py
 
 # Client manager
 ADD docker_files/common/client_manager.py /client_manager.py
