@@ -41,7 +41,7 @@ ftp_2:
 	docker build --no-cache -f ./ftp_2/docker/Dockerfile ./ftp_2/docker/ -t $(DOCKERHUB_USER)/csle_ftp_2:$(VERSION)
 
 hacker_kali_1:
-	docker build --no-cache -f ./hacker_kali_1/docker/Dockerfile ./hacker_kali_1/docker/ -t $(DOCKERHUB_USER)/csle_hacker_kali_1:$(VERSION)
+	docker build -f ./hacker_kali_1/docker/Dockerfile ./hacker_kali_1/docker/ -t $(DOCKERHUB_USER)/csle_hacker_kali_1:$(VERSION)
 
 honeypot_1:
 	docker build --no-cache -f ./honeypot_1/docker/Dockerfile ./honeypot_1/docker/ -t $(DOCKERHUB_USER)/csle_honeypot_1:$(VERSION)

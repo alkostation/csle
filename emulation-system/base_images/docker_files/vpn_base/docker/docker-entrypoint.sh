@@ -2,6 +2,24 @@
 
 set -e
 
+while [ -z  "$(ip a show eth0 | grep 'inet ')" ]; do
+    echo "Waiting for eth0 to be available..."
+    sleep 2
+done
+
+# Generate host keys if they don't exist
+if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
+    echo "Generating SSH host keys..."
+    ssh-keygen -A
+fi
+
+# Ensure proper ownership of the SSH directory
+chown -R root:root /etc/ssh
+
+# Start the SSH daemon
+echo "Starting SSH daemon..."
+/usr/sbin/sshd -f /etc/ssh/sshd_config -D &
+
 # Check if the configuration file is provided
 CONFIG_FILE=${OVPN_CONFIG:-"/etc/openvpn/server/sl700-server.conf"}
 

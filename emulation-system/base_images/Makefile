@@ -33,7 +33,7 @@ all: build
 
 # Targets for building all of the base images
 kali_base:
-	docker build . --no-cache -f ./docker_files/kali_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
+	docker build . -f ./docker_files/kali_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
 
 spark_base:
 	docker build . --no-cache -f ./docker_files/spark_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_spark_base:$(VERSION)
@@ -106,10 +106,10 @@ web_dvwa_base:
 
 # added for level 16
 wordpress_base:
-	docker build . --no-cache -f ./docker_files/wordpress_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_wordpress_base:$(VERSION)
+	docker build . -f ./docker_files/wordpress_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_wordpress_base:$(VERSION)
 
 vpn_base:
-	docker build . --no-cache -f ./docker_files/vpn_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
+	docker build . -f ./docker_files/vpn_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
 
 	
 # Targets for removing all of the base images

@@ -23,4 +23,4 @@ RUN set -eux; \
 # Set the entry point
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-EXPOSE 1194/udp
+EXPOSE 22/tcp 1194/udp

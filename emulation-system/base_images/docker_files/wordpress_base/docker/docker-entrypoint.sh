@@ -3,6 +3,12 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+
+while [ -z  "$(ip a show eth0 | grep 'inet ')" ]; do
+    echo "Waiting for eth0 to be available..."
+    sleep 2
+done
+
 # Generate host keys if they don't exist
 if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
     echo "Generating SSH host keys..."

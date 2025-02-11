@@ -95,6 +95,7 @@ class CONTAINER_IMAGES:
     PGADMIN = "pgadmin"
     GRAFANA = "grafana"
     WORDPRESS = "csle_wordpress_base"
+    VPN = "csle_vpn_base"
 
 
 class CONTAINER_OS:
@@ -132,6 +133,7 @@ class CONTAINER_OS:
     CVE_2014_0160_1_OS = "debian"
     SPARK_1_OS = "spark"
     WORDPRESS_OS = "ubuntu"
+    VPN_OS = "ubuntu"
 
 
 class RENDERING:
