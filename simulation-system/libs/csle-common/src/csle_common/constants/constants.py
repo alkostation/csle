@@ -96,6 +96,7 @@ class CONTAINER_IMAGES:
     GRAFANA = "grafana"
     WORDPRESS = "csle_wordpress_base"
     VPN = "csle_vpn_base"
+    DNS = "csle_dns_base"
 
 
 class CONTAINER_OS:
@@ -134,6 +135,7 @@ class CONTAINER_OS:
     SPARK_1_OS = "spark"
     WORDPRESS_OS = "ubuntu"
     VPN_OS = "ubuntu"
+    DNS_OS = "ubuntu"
 
 
 class RENDERING:

@@ -27,6 +27,8 @@ VERSION=0.7.0
 # added for level 16
 	wordpress_base rm_wordpress_base push_wordpress_base pull_wordpress_base
 	vpn_base rm_vpn_base push_vpn_base pull_vpn_base
+	dns_base rm_dns_base push_dns_base pull_dns_base
+	
 
 
 all: build
@@ -111,6 +113,9 @@ wordpress_base:
 vpn_base:
 	docker build . -f ./docker_files/vpn_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
 
+dns_base:
+	docker build . -f ./docker_files/dns_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
+
 	
 # Targets for removing all of the base images
 rm_kali_base:
@@ -191,6 +196,9 @@ rm_wordpress_base:
 
 rm_vpn_base:
 	-docker rmi $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
+
+rm_dns_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 
 
 # Targets for pushing all of the base images to DockerHub
@@ -273,6 +281,9 @@ push_wordpress_base:
 push_vpn_base:
 	-docker push $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
 
+push_dns_base:
+	-docker push $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
+
 
 # Targets for pulling all of the base images from DockerHub
 pull_kali_base:
@@ -354,6 +365,9 @@ pull_wordpress_base:
 pull_vpn_base:
 	-docker pull $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
 
+pull_dns_base:
+	-docker pull $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
+
 	
 # Build all of the base images sequentially
 build:
@@ -385,6 +399,7 @@ build:
 # added for level 16
 	docker build . --no-cache -f ./docker_files/wordpress_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_wordpress_base:$(VERSION)
 	docker build . --no-cache -f ./docker_files/vpn_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
+	docker build . --no-cache -f ./docker_files/dns_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 
 	
 # Remove all base images
@@ -417,7 +432,7 @@ rm_image:
 # added for level 16
 	-docker rmi $(DOCKERHUB_USER)/csle_wordpress_base:$(VERSION)
 	-docker rmi $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
-
+	-docker rmi $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 
 # Push all base images
 push:
@@ -449,7 +464,7 @@ push:
 # added for level 16
 	-docker push $(DOCKERHUB_USER)/csle_wordpress_base:$(VERSION)
 	-docker push $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
-
+	-docker push $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 
 # Pull all base images
 pull:
@@ -481,4 +496,5 @@ pull:
 # added for level 16
 	-docker pull $(DOCKERHUB_USER)/csle_wordpress_base:$(VERSION)
 	-docker pull $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
+	-docker pull $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 
