@@ -18,7 +18,7 @@ chown -R root:root /etc/ssh
 
 # Start the SSH daemon
 echo "Starting SSH daemon..."
-/usr/sbin/sshd -f /etc/ssh/sshd_config -D &
+/usr/sbin/sshd -D &
 
 # Check if the configuration file is provided
 CONFIG_FILE=${OVPN_CONFIG:-"/etc/openvpn/server/sl700-server.conf"}
