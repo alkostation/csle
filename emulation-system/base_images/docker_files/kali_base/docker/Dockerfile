@@ -9,7 +9,7 @@ RUN apt-get -y install apt-utils  \
                        exploitdb nikto traceroute finger git sshpass lftp recon-ng netdiscover hping3 ncat masscan \
                        iptables proxychains zip unzip arptables irssi irssi-scripts screen postgresql-client-common \
                        snmp postgresql-client smbclient tcpdump netcat-traditional traceroute sysstat iproute2  \
-                       lsof openvpn nano
+                       lsof openvpn nano ffuf ruby
 
 #RUN apt-get -y install man-db
 #&& DEBIAN_FRONTEND=noninteractive apt -yqq install kali-linux-headless
@@ -38,7 +38,7 @@ RUN git clone https://github.com/Limmen/vulscan scipag_vulscan &&\
 #     nmap --script-updatedb
 
 # SecLists
-RUN git clone https://github.com/Limmen/SecLists
+RUN git clone --depth 1 https://github.com/danielmiessler/SecLists.git
 
 # 1. Alias
 # 2. Setup root passwd
@@ -148,7 +148,11 @@ RUN chmod 777 /heartbleed_exploit.py
 ADD docker_files/common/wpDiscuz_RemoteCodeExec.py /wpDiscuz_RemoteCodeExec.py
 RUN chmod 777 /wpDiscuz_RemoteCodeExec.py
 
+# VPN file
 ADD docker_files/common/vpn-files/* /vpn-files/
+
+# WPScan
+RUN gem install wpscan 
 
 # Client manager
 ADD docker_files/common/client_manager.py /client_manager.py
