@@ -1,6 +1,6 @@
-# Adversary Emulation and Traces Collection for Emulation Level 9
+# Adversary Emulation and Traces Collection for Emulation Level 16
 
-This directory contains example scripts for collecting traces and adversary emulation for emulation level 9
+This directory contains example scripts for collecting traces and adversary emulation for emulation level 16
 
 ## Commands
 
@@ -11,7 +11,8 @@ python <script_name>
 
 ## Author & Maintainer
 
-Kim Hammar <kimham@kth.se>
+Marco Campione <campione@kth.se>
+Mateus Monteiro Marinheiro <mateusma@kth.se>
 
 ## Copyright and license
 
