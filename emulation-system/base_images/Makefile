@@ -28,8 +28,11 @@ VERSION=0.7.0
 	wordpress_base rm_wordpress_base push_wordpress_base pull_wordpress_base \
 	vpn_base rm_vpn_base push_vpn_base pull_vpn_base \
 	dns_base rm_dns_base push_dns_base pull_dns_base \
-	owncloud_base rm_owncloud_base push_owncloud_base pull_owncloud_base
-	
+	owncloud_base rm_owncloud_base push_owncloud_base pull_owncloud_base \
+	proxy_base rm_proxy_base push_proxy_base pull_proxy_base \
+	int_email_base rm_int_email_base push_int_email_base pull_int_email_base \
+	ext_email_base rm_ext_email_base push_ext_email_base pull_ext_email_base \
+	ext_employer_base rm_ext_employer_base push_ext_employer_base pull_ext_employer_base
 
 
 all: build
@@ -119,7 +122,19 @@ dns_base:
 
 owncloud_base:
 	docker build . -f ./docker_files/owncloud_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_owncloud_base:$(VERSION)
-	
+
+proxy_base:
+	docker build . -f ./docker_files/proxy_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_proxy_base:$(VERSION)
+
+int_email_base:
+	docker build . -f ./docker_files/int_email_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
+
+ext_email_base:
+	docker build . -f ./docker_files/ext_email_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+
+ext_employer_base:
+	docker build . -f ./docker_files/ext_employer_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
+
 # Targets for removing all of the base images
 rm_kali_base:
 	-docker rmi $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
@@ -205,6 +220,18 @@ rm_dns_base:
 
 rm_owncloud_base:
 	-docker rmi $(DOCKERHUB_USER)/csle_owncloud_base:$(VERSION)
+
+rm_proxy_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_proxy_base:$(VERSION)
+
+rm_int_email_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
+
+rm_ext_email_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+
+rm_ext_employer_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
 
 # Targets for pushing all of the base images to DockerHub
 push_kali_base:
@@ -292,6 +319,18 @@ push_dns_base:
 push_owncloud_base:
 	-docker push $(DOCKERHUB_USER)/csle_owncloud_base:$(VERSION)
 
+push_proxy_base:
+	-docker push $(DOCKERHUB_USER)/csle_proxy_base:$(VERSION)
+
+push_int_email_base:
+	-docker push $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
+
+push_ext_email_base:
+	-docker push $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+
+push_ext_employer_base:
+	-docker push $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
+
 # Targets for pulling all of the base images from DockerHub
 pull_kali_base:
 	-docker pull $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
@@ -377,7 +416,19 @@ pull_dns_base:
 
 pull_owncloud_base:
 	-docker pull $(DOCKERHUB_USER)/csle_owncloud_base:$(VERSION)
-	
+
+pull_proxy_base:
+	-docker pull $(DOCKERHUB_USER)/csle_proxy_base:$(VERSION)
+
+pull_int_email_base:
+	-docker pull $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
+
+pull_ext_email_base:
+	-docker pull $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+
+pull_ext_employer_base:
+	-docker pull $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
+
 # Build all of the base images sequentially
 build:
 	docker build . --no-cache -f ./docker_files/kali_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
@@ -410,7 +461,10 @@ build:
 	docker build . --no-cache -f ./docker_files/vpn_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
 	docker build . --no-cache -f ./docker_files/dns_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 	docker build . --no-cache -f ./docker_files/owncloud_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_owncloud_base:$(VERSION)
-
+	docker build . --no-cache -f ./docker_files/proxy_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_proxy_base:$(VERSION)
+	docker build . --no-cache -f ./docker_files/int_email_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
+	docker build . --no-cache -f ./docker_files/ext_email_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+	docker build . --no-cache -f ./docker_files/ext_employer_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
 	
 # Remove all base images
 rm_image:
@@ -444,6 +498,10 @@ rm_image:
 	-docker rmi $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
 	-docker rmi $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 	-docker rmi $(DOCKERHUB_USER)/csle_owncloud_base:$(VERSION)
+	-docker rmi $(DOCKERHUB_USER)/csle_proxy_base:$(VERSION)
+	-docker rmi $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
+	-docker rmi $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+	-docker rmi $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
 
 # Push all base images
 push:
@@ -477,6 +535,10 @@ push:
 	-docker push $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
 	-docker push $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 	-docker push $(DOCKERHUB_USER)/csle_owncloud_base:$(VERSION)
+	-docker push $(DOCKERHUB_USER)/csle_proxy_base:$(VERSION)
+	-docker push $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
+	-docker push $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+	-docker push $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
 
 # Pull all base images
 pull:
@@ -510,4 +572,8 @@ pull:
 	-docker pull $(DOCKERHUB_USER)/csle_vpn_base:$(VERSION)
 	-docker pull $(DOCKERHUB_USER)/csle_dns_base:$(VERSION)
 	-docker pull $(DOCKERHUB_USER)/csle_owncloud_base:$(VERSION)
-
+	-docker pull $(DOCKERHUB_USER)/csle_proxy_base:$(VERSION)
+	-docker pull $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
+	-docker pull $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+	-docker pull $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
+	-docker pull $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)

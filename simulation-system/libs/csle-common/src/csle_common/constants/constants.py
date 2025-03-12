@@ -97,8 +97,12 @@ class CONTAINER_IMAGES:
     WORDPRESS = "csle_wordpress_base"
     VPN = "csle_vpn_base"
     DNS = "csle_dns_base"
-
-
+    OWNCLOUD = "csle_owncloud_base"
+    EXTERNAL_EMPL = "csle_ext_employer_base"
+    EXTERNAL_EMAIL = "csle_ext_email_base"
+    PROXY = "csle_proxy_base"
+    EMAIL_DMZ = "csle_int_email_base"
+    
 class CONTAINER_OS:
     """
     String constants representing OS of different containers
@@ -136,7 +140,11 @@ class CONTAINER_OS:
     WORDPRESS_OS = "ubuntu"
     VPN_OS = "ubuntu"
     DNS_OS = "ubuntu"
-
+    OWNCLOUD_OS = "ubuntu"
+    EXTERNAL_EMPL_OS = "ubuntu"
+    EXTERNAL_EMAIL_OS = "ubuntu"
+    PROXY_OS = "ubuntu"
+    EMAIL_DMZ_OS = "ubuntu"
 
 class RENDERING:
     """
