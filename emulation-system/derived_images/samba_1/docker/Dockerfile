@@ -1,5 +1,5 @@
 # OS
-FROM kimham/csle_samba_base:0.7.0
+FROM kthnse/csle_samba_base:0.7.0
 USER root
 
 # Add start script
