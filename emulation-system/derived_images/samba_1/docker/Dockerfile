@@ -10,6 +10,7 @@ RUN chmod 777 /start.sh
 ADD dns_exfiltrator.sh /dns_exfiltrator.sh
 RUN chmod 777 /dns_exfiltrator.sh
 
+ADD dnsteal/ /important-data/
 # timezone env with default
 ENV TZ=Europe/Stockholm
 
