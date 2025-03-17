@@ -1894,7 +1894,7 @@ def default_topology_config(network_id: int) -> TopologyConfig:
                                   f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
                                   f"{network_id}.1{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
                                   f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
-                                  f"{network_id}.2{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}"
+                                  f"{network_id}.2{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
                                   f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
                                   f"{network_id}.3{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
                                   f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
