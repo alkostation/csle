@@ -34,6 +34,11 @@ VERSION=0.7.0
 	ext_email_base rm_ext_email_base push_ext_email_base pull_ext_email_base \
 	ext_employer_base rm_ext_employer_base push_ext_employer_base pull_ext_employer_base
 
+# added for level 17
+	zoneminder_base rm_zoneminder_base push_zoneminder_base pull_zoneminder_base \
+	public_dns_base rm_public_dns_base push_public_dns_base pull_public_dns_base \
+	corp_dns_base rm_corp_dns_base push_corp_dns_base pull_corp_dns_base \
+	rtsp_cam_base rm_rtsp_cam_base push_rtsp_cam_base pull_rtsp_cam_base \
 
 all: build
 
@@ -135,6 +140,19 @@ ext_email_base:
 ext_employer_base:
 	docker build . -f ./docker_files/ext_employer_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
 
+# added for level 17
+zoneminder_base:
+	docker build . -f ./docker_files/zoneminder13632_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_zoneminder_base:$(VERSION)
+
+public_dns_base:
+	docker build . -f ./docker_files/dns_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_public_dns_base:$(VERSION)
+
+corp_dns_base:
+	docker build . -f ./docker_files/dns_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_corp_dns_base:$(VERSION)
+
+rtsp_cam_base:
+	docker build . -f ./docker_files/rtsp_cam_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_rtsp_cam_base:$(VERSION)
+
 # Targets for removing all of the base images
 rm_kali_base:
 	-docker rmi $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
@@ -232,6 +250,19 @@ rm_ext_email_base:
 
 rm_ext_employer_base:
 	-docker rmi $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
+
+# Added for level 17
+rm_zoneminder_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_zoneminder_base:$(VERSION)
+
+rm_public_dns_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_public_dns_base:$(VERSION)
+	
+rm_corp_dns_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_corp_dns_base:$(VERSION)
+
+rm_rtsp_cam_base:
+	-docker rmi $(DOCKERHUB_USER)/csle_rtsp_camp_base:$(VERSION)
 
 # Targets for pushing all of the base images to DockerHub
 push_kali_base:
@@ -331,6 +362,19 @@ push_ext_email_base:
 push_ext_employer_base:
 	-docker push $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
 
+# Added for level 17
+push_zoneminder_base:
+	-docker push $(DOCKERHUB_USER)/csle_zoneminder_base:$(VERSION)
+
+push_public_dns_base:
+	-docker push $(DOCKERHUB_USER)/csle_public_dns_base:$(VERSION)
+	
+push_corp_dns_base:
+	-docker push $(DOCKERHUB_USER)/csle_corp_dns_base:$(VERSION)
+
+push_rtsp_cam_base:
+	-docker push $(DOCKERHUB_USER)/csle_rtsp_cam_base:$(VERSION)
+
 # Targets for pulling all of the base images from DockerHub
 pull_kali_base:
 	-docker pull $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
@@ -429,6 +473,19 @@ pull_ext_email_base:
 pull_ext_employer_base:
 	-docker pull $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
 
+# Added for level 17
+pull_zoneminder_base:
+	-docker pull $(DOCKERHUB_USER)/zoneminder_base:$(VERSION)
+
+pull_public_dns_base:
+	-docker pull $(DOCKERHUB_USER)/csle_public_dns_base:$(VERSION)
+	
+pull_corp_dns_base:
+	-docker pull $(DOCKERHUB_USER)/csle_corp_dns_base:$(VERSION)
+
+pull_rtsp_cam_base:
+	-docker pull $(DOCKERHUB_USER)/csle_rtsp_cam_base:$(VERSION)
+
 # Build all of the base images sequentially
 build:
 	docker build . --no-cache -f ./docker_files/kali_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
@@ -465,6 +522,12 @@ build:
 	docker build . --no-cache -f ./docker_files/int_email_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
 	docker build . --no-cache -f ./docker_files/ext_email_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
 	docker build . --no-cache -f ./docker_files/ext_employer_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
+
+# added for level 17	
+	docker build . --no-cache -f ./docker_files/zoneminder13632_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_zoneminder_base:$(VERSION)
+	docker build . --no-cache -f ./docker_files/dns_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_public_dns_base:$(VERSION)
+	docker build . --no-cache -f ./docker_files/dns_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_corp_dns_base:$(VERSION)
+	docker build . --no-cache -f ./docker_files/rtsp_cam_base/docker/Dockerfile -t $(DOCKERHUB_USER)/csle_rtsp_cam_base:$(VERSION)
 	
 # Remove all base images
 rm_image:
@@ -503,6 +566,12 @@ rm_image:
 	-docker rmi $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
 	-docker rmi $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
 
+# added for level 17	
+	-docker rmi $(DOCKERHUB_USER)/csle_zoneminder_base:$(VERSION)
+	-docker rmi $(DOCKERHUB_USER)/csle_public_dns_base:$(VERSION)
+	-docker rmi $(DOCKERHUB_USER)/csle_corp_dns_base:$(VERSION)
+	-docker rmi $(DOCKERHUB_USER)/csle_rtsp_cam_base:$(VERSION)
+
 # Push all base images
 push:
 	-docker push $(DOCKERHUB_USER)/csle_kali_base:$(VERSION)
@@ -539,6 +608,12 @@ push:
 	-docker push $(DOCKERHUB_USER)/csle_int_email_base:$(VERSION)
 	-docker push $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
 	-docker push $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
+
+# added for level 17	
+	-docker push $(DOCKERHUB_USER)/csle_zoneminder_base:$(VERSION)
+	-docker push $(DOCKERHUB_USER)/csle_public_dns_base:$(VERSION)
+	-docker push $(DOCKERHUB_USER)/csle_corp_dns_base:$(VERSION)
+	-docker push $(DOCKERHUB_USER)/csle_rtsp_cam_base:$(VERSION)
 
 # Pull all base images
 pull:
@@ -577,3 +652,9 @@ pull:
 	-docker pull $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
 	-docker pull $(DOCKERHUB_USER)/csle_ext_email_base:$(VERSION)
 	-docker pull $(DOCKERHUB_USER)/csle_ext_employer_base:$(VERSION)
+
+# added for level 17
+	-docker pull $(DOCKERHUB_USER)/csle_zoneminder_base:$(VERSION)
+	-docker pull $(DOCKERHUB_USER)/csle_public_dns_base:$(VERSION)
+	-docker pull $(DOCKERHUB_USER)/csle_corp_dns_base:$(VERSION)
+	-docker pull $(DOCKERHUB_USER)/csle_rtsp_cam_base:$(VERSION)
