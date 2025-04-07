@@ -9,6 +9,9 @@ from csle_collector.client_manager.dao.workflows_config import WorkflowsConfig
 from csle_collector.client_manager.dao.workflow_service import WorkflowService
 from csle_collector.client_manager.dao.workflow_markov_chain import WorkflowMarkovChain
 from csle_collector.client_manager.dao.client import Client
+from csle_common.dao.emulation_action.attacker.emulation_attacker_network_service_actions import EmulationAttackerNetworkServiceActions
+from csle_common.dao.emulation_action.attacker.emulation_attacker_nmap_actions import EmulationAttackerNMAPActions
+from csle_common.dao.emulation_action.attacker.emulation_attacker_shell_actions import EmulationAttackerShellActions
 import csle_ryu.constants.constants as ryu_constants
 from csle_common.dao.emulation_config.topology_config import TopologyConfig
 from csle_common.dao.emulation_config.node_firewall_config import NodeFirewallConfig
@@ -595,7 +598,9 @@ def default_containers_config(network_id: int, level: int, version: str) -> Cont
                  f"{collector_constants.EXTERNAL_NETWORK.NETWORK_ID_THIRD_OCTET}.191",
         router_ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.10",
         ids_enabled=False,
-        vulnerable_nodes=[],
+        vulnerable_nodes=[
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.32",
+        ],
         agent_reachable_nodes=[
             f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.10",
             f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.20",
@@ -603,8 +608,11 @@ def default_containers_config(network_id: int, level: int, version: str) -> Cont
             f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.4.30",
             f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.30",
             f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.32",
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.33",
             f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.21",
-            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.12"
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.24",
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.12",
+            f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.14"
         ],
         networks=[
             ContainerNetwork(
@@ -2154,7 +2162,7 @@ def default_kafka_config(network_id: int, level: int, version: str, time_step_le
                          kafka_manager_max_workers=collector_constants.GRPC_WORKERS.DEFAULT_MAX_NUM_WORKERS)
     return config
 
-
+# !! maybe we can define a wp user here that has root capabilities
 def default_users_config(network_id: int) -> UsersConfig:
     """
     Generates default users config
@@ -2165,24 +2173,7 @@ def default_users_config(network_id: int) -> UsersConfig:
     users = [
         NodeUsersConfig(ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}."
                            f"{collector_constants.EXTERNAL_NETWORK.NETWORK_ID_THIRD_OCTET}.191",
-                        users=[User(username="agent", pw="agent", root=True)]),
-        NodeUsersConfig(ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.21", users=[
-            User(username="admin", pw="admin31151x", root=True),
-            User(username="test", pw="qwerty", root=True),
-            User(username="oracle", pw="abc123", root=False)
-        ]),
-        NodeUsersConfig(ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.10", users=[
-            User(username="admin", pw="admin1235912", root=True),
-            User(username="jessica", pw="water", root=False)
-        ]),
-        NodeUsersConfig(ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.78", users=[
-            User(username="admin", pw="test32121", root=True),
-            User(username="user1", pw="123123", root=True)
-        ]),
-        NodeUsersConfig(ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.3", users=[
-            User(username="john", pw="doe", root=True),
-            User(username="vagrant", pw="test_pw1", root=False)
-        ])
+                        users=[User(username="agent", pw="agent", root=True)])
     ]
     users_conf = UsersConfig(users_configs=users)
     return users_conf
@@ -2195,7 +2186,16 @@ def default_vulns_config(network_id: int) -> VulnerabilitiesConfig:
     :param network_id: the network id
     :return: the vulnerability config
     """
-    vulns = []
+    vulns = [        
+        NodeVulnerabilityConfig(
+            name=constants.EXPLOIT_VULNERABILITES.CVE_2020_24186,
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.32",
+            vuln_type=VulnType.RCE,
+            cvss=constants.EXPLOIT_VULNERABILITES.CVE_2020_24186_CVSS,
+            cve=constants.EXPLOIT_VULNERABILITES.CVE_2020_24186,
+            root=False, port=constants.CVE_2020_24186.PORT, protocol=TransportProtocol.TCP,
+            service=constants.CVE_2020_24186.SERVICE_NAME),
+        ]
     vulns_config = VulnerabilitiesConfig(node_vulnerability_configs=vulns)
     return vulns_config
 
@@ -2208,6 +2208,124 @@ def default_services_config(network_id: int) -> ServicesConfig:
     :return: The services configuration
     """
     services_configs = [
+        # ----------------------- INTERNET -----------------------
+        # Attacker IP [x.x.1.191]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.191",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[])
+            ]
+        ),
+        # Remote Employee IP [x.x.1.11]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.11",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[])
+            ]
+        ),
+        # DNS Server IP [x.x.1.12]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.12",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[]),
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.DNS.DEFAULT_PORT,
+                               name=constants.DNS.SERVICE_NAME, credentials=[]),
+            ]
+        ),
+        # External Employee IP [x.x.1.13]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.13",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[])
+            ]
+        ),
+        # External Email Server IP [x.x.1.14]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.14",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[]),
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SMTP.DEFAULT_PORT,
+                               name=constants.SMTP.SERVICE_NAME, credentials=[])
+            ]
+        ),
+        # ----------------------- DMZ -----------------------
+        # VPN Server IP [x.x.2.21]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.21",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[])
+            ]
+        ),
+        # Proxy Server IP [x.x.2.22]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.22",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[])
+            ]
+        ),
+        # MAIL Server IP [x.x.2.23]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.23",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[]),
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SMTP.DEFAULT_PORT,
+                               name=constants.SMTP.SERVICE_NAME, credentials=[])
+            ]
+        ),
+        # Ownclowd Server IP [x.x.2.24]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.24",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[]),
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.HTTP.DEFAULT_PORT,
+                               name=constants.HTTP.SERVICE_NAME, credentials=[]),
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.MYSQL.DEFAULT_PORT,
+                               name=constants.MYSQL.SERVICE_NAME, credentials=[]),
+            ]
+        ),
+        # ----------------------- INTRANET -----------------------
+        # Employee IP [x.x.3.31]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.31",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[])
+            ]
+        ),
+        # Wordpress Server IP [x.x.3.32]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.32",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[]),
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.HTTP.DEFAULT_PORT,
+                               name=constants.HTTP.SERVICE_NAME, credentials=[]),
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.MYSQL.DEFAULT_PORT,
+                               name=constants.MYSQL.SERVICE_NAME, credentials=[]),
+            ]
+        ),
+        # Samba Server IP [x.x.3.33]
+        NodeServicesConfig(
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.3.33",
+            services=[
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
+                               name=constants.SSH.SERVICE_NAME, credentials=[]),
+                NetworkService(protocol=TransportProtocol.TCP, port=constants.SAMBA.PORT,
+                               name=constants.SAMBA.SERVICE_NAME, credentials=[])
+            ]
+        ),
+
+        # ----------------------- MIX -----------------------
+        # Kafka
         NodeServicesConfig(
             ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}."
                f"{collector_constants.EXTERNAL_NETWORK.NETWORK_ID_THIRD_OCTET}.254",
@@ -2216,75 +2334,14 @@ def default_services_config(network_id: int) -> ServicesConfig:
                                name=constants.SSH.SERVICE_NAME, credentials=[])
             ]
         ),
+        # Router
         NodeServicesConfig(
-            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.79",
-            services=[
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
-                               name=constants.SSH.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.FTP.DEFAULT_PORT,
-                               name=constants.FTP.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.MONGO.DEFAULT_PORT,
-                               name=constants.MONGO.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.TOMCAT.DEFAULT_PORT,
-                               name=constants.TOMCAT.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.TEAMSPEAK3.DEFAULT_PORT,
-                               name=constants.TEAMSPEAK3.SERVICE_NAME, credentials=[])
-            ]
-        ),
-        NodeServicesConfig(
-            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}."
-               f"{collector_constants.EXTERNAL_NETWORK.NETWORK_ID_THIRD_OCTET}.191",
+            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.1.10",
             services=[
                 NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
                                name=constants.SSH.SERVICE_NAME, credentials=[])
             ]
         ),
-        NodeServicesConfig(
-            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.21",
-            services=[
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
-                               name=constants.SSH.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.SNMP.DEFAULT_PORT,
-                               name=constants.SNMP.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.POSTGRES.DEFAULT_PORT,
-                               name=constants.POSTGRES.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.SMTP.DEFAULT_PORT,
-                               name=constants.SMTP.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.SNMP.DEFAULT_PORT,
-                               name=constants.SNMP.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.NTP.DEFAULT_PORT,
-                               name=constants.NTP.SERVICE_NAME, credentials=[])
-            ]
-        ),
-        NodeServicesConfig(
-            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.10",
-            services=[
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
-                               name=constants.SSH.SERVICE_NAME, credentials=[])
-            ]
-        ),
-        NodeServicesConfig(
-            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.78",
-            services=[
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
-                               name=constants.SSH.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.DNS.DEFAULT_PORT,
-                               name=constants.DNS.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.HTTP.DEFAULT_PORT,
-                               name=constants.HTTP.SERVICE_NAME, credentials=[])
-            ]
-        ),
-        NodeServicesConfig(
-            ip=f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}{network_id}.2.3",
-            services=[
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.SSH.DEFAULT_PORT,
-                               name=constants.SSH.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.TELNET.DEFAULT_PORT,
-                               name=constants.TELNET.SERVICE_NAME, credentials=[]),
-                NetworkService(protocol=TransportProtocol.TCP, port=constants.HTTP.DEFAULT_PORT,
-                               name=constants.HTTP.SERVICE_NAME, credentials=[])
-            ]
-        )
     ]
     service_cfg = ServicesConfig(
         services_configs=services_configs
@@ -2299,7 +2356,42 @@ def default_static_attacker_sequences(subnet_masks: List[str]) -> Dict[str, List
     :param subnetmasks: list of subnet masks for the emulation
     :return: the default static attacker sequences configuration
     """
-    return {}
+    d = {}
+    d[constants.STATIC_ATTACKERS.EXPERT] = [
+        # NMAP
+        EmulationAttackerNMAPActions.PING_SCAN(index=-1, ips=subnet_masks), # !! before the vpn
+        
+        # Connect to VPN
+        # ("sudo openvpn --config  /vpn-files/openvpn-config-sl001-daniel-cox.ovpn &", attacker_ip),
+        EmulationAttackerShellActions.OPENVPN_LOGIN(index=-1),
+
+        # ("nmap -sC -sV --top-ports 1000 15.16.3.33", attacker_ip),
+        # ("nmap -sC -sV --top-ports 1000 15.16.3.32", attacker_ip),
+        # ("nmap -sC -sV --top-ports 1000 15.16.2.24", attacker_ip),
+        # ("nmap -sC -sV --top-ports 1000 15.16.1.14", attacker_ip),
+        EmulationAttackerNMAPActions.TCP_FULL_SCAN(index=-1, ips=["15.16.3.33","15.16.3.32","15.16.2.24","15.16.1.14"]), # !! before the vpn
+
+        # WPScan
+        # ("wpscan --url http://15.16.3.32", attacker_ip),
+        EmulationAttackerShellActions.WPSCAN(index=-1),
+        
+        # DIRB
+        # ("dirb http://15.16.3.32 -r", attacker_ip),
+        EmulationAttackerShellActions.DIRB(index=-1),
+        
+        # wpDiscuz exploit
+        # ("python3 /wpDiscuz_RemoteCodeExec.py -u http://15.16.3.32/ -p /2025/03/17/hello-world/", attacker_ip),
+        EmulationAttackerShellActions.CVE_2020_24186_EXPLOIT(index=-1),
+
+        # ROOT access + actions
+        # ("echo \"./script.sh\" | sshpass -p \"csle@admin-pw_191\" ssh csle_admin@15.16.3.32", attacker_ip),
+        EmulationAttackerShellActions.ROOT_COMMANDS(index=-1),
+
+        # Disconnect VPN
+        # "sudo killall openvpn"
+        EmulationAttackerShellActions.OPENVPN_EXIT(index=-1),
+    ]
+    return d
 
 
 def default_ovs_config(network_id: int, level: int, version: str) -> OVSConfig:
