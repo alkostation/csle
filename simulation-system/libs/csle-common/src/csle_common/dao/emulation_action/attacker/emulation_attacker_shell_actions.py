@@ -245,7 +245,7 @@ class EmulationAttackerShellActions:
                                        descr="Uses the CVE-2020-24186 vulnerability to "
                                              "obtain a remote shell.",
                                        index=index,
-                                       ips=["15.16.3.32"], action_outcome=EmulationAttackerActionOutcome.SHELL_ACCESS,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.SHELL_ACCESS,
                                        alt_cmds=None, vulnerability=constants.CVE_2020_24186.VULNERABILITY_NAME,
                                        backdoor=False)
 
@@ -320,7 +320,7 @@ class EmulationAttackerShellActions:
     @staticmethod
     def ROOT_COMMANDS(index: int) -> EmulationAttackerAction:
         """
-        Exit a openVPN session
+        Escalate Priv and commands
 
         :param index: index of the machine to apply the action to
         :return: the created action
@@ -332,4 +332,21 @@ class EmulationAttackerShellActions:
                                        descr="Escalate Priv and commands",
                                        index=index,
                                        ips=[], action_outcome=EmulationAttackerActionOutcome.PRIVILEGE_ESCALATION_ROOT, alt_cmds=None,
+                                       backdoor=False)
+    
+    def PASSWORD_CRACK(index: int) -> EmulationAttackerAction:
+        """
+        Hash cracking with john the ripper
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.PASSWORD_CRACK
+        # !! CHANGE THIS 
+        cmd = ["john --wordlist=rockyou.txt passwords.txt"]
+        return EmulationAttackerAction(id=id, name="hash cracking", cmds=cmd,
+                                       type=EmulationAttackerActionType.POST_EXPLOIT,
+                                       descr="Hash cracking with john the ripper",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING, alt_cmds=None,
                                        backdoor=False)

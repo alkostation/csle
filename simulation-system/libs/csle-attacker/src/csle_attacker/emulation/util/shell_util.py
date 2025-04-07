@@ -616,7 +616,7 @@ class ShellUtil:
     @staticmethod
     def command_helper(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
         """
-        Helper for connecting to the OpenVPN server
+        Helper for command execution
 
         :param s: the current state
         :param a: the openvpn login action

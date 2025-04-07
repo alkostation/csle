@@ -53,7 +53,7 @@ class EmulatedAttacker:
         if a.id == EmulationAttackerActionId.TCP_SYN_STEALTH_SCAN_HOST \
                 or a.id == EmulationAttackerActionId.TCP_SYN_STEALTH_SCAN_ALL:
             return ReconMiddleware.execute_tcp_syn_stealth_scan(s=s, a=a)
-        if a.id == EmulationAttackerActionId.FULL_TCP_SCAN_HOST:
+        if a.id == EmulationAttackerActionId.TCP_FULL_SCAN_HOST:
             return ReconMiddleware.execute_tcp_full_scan(s=s, a=a)
         elif a.id == EmulationAttackerActionId.PING_SCAN_HOST or a.id == EmulationAttackerActionId.PING_SCAN_ALL:
             return ReconMiddleware.execute_ping_scan(s=s, a=a)
@@ -184,6 +184,8 @@ class EmulatedAttacker:
             return PostExploitMiddleware.execute_install_tools(s=s, a=a)
         if a.id == EmulationAttackerActionId.SSH_BACKDOOR:
             return PostExploitMiddleware.execute_ssh_backdoor(s=s, a=a)
+        if a.id == EmulationAttackerActionId.PASSWORD_CRACK:
+            return PostExploitMiddleware.execute_password_cracking_command(s=s, a=a)
         else:
             raise ValueError("Post-expoit action id:{},name:{} not recognized".format(a.id, a.name))
 

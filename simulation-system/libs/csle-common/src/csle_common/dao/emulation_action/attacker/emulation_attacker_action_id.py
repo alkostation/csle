@@ -75,3 +75,4 @@ class EmulationAttackerActionId(IntEnum):
     OPENVPN_EXIT = 67
     ROOT_COMMANDS = 68
     TCP_FULL_SCAN_HOST = 69
+    PASSWORD_CRACK = 70

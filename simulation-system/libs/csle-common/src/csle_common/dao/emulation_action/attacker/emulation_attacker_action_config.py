@@ -260,6 +260,7 @@ class EmulationAttackerActionConfig(JSONSerializable):
         nmap_action_ids = [
             EmulationAttackerActionId.TCP_SYN_STEALTH_SCAN_HOST,
             EmulationAttackerActionId.TCP_SYN_STEALTH_SCAN_ALL,
+            EmulationAttackerActionId.TCP_FULL_SCAN_HOST,
             EmulationAttackerActionId.PING_SCAN_HOST,
             EmulationAttackerActionId.PING_SCAN_ALL,
             EmulationAttackerActionId.UDP_PORT_SCAN_HOST,
@@ -317,6 +318,7 @@ class EmulationAttackerActionConfig(JSONSerializable):
                             EmulationAttackerActionId.DIRB,
                             EmulationAttackerActionId.OPENVPN_LOGIN,
                             EmulationAttackerActionId.OPENVPN_EXIT,
+                            EmulationAttackerActionId.PASSWORD_CRACK,
                             ]
         nikto_action_ids = [EmulationAttackerActionId.NIKTO_WEB_HOST_SCAN]
         masscan_action_ids = [EmulationAttackerActionId.MASSCAN_HOST_SCAN, EmulationAttackerActionId.MASSCAN_ALL_SCAN]
