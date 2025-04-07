@@ -604,6 +604,9 @@ RUN set -eux \
 RUN mv /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 ADD docker_files/common/sshd_config /etc/ssh/sshd_config
 
+ADD ./docker_files/wordpress_base/docker/script.sh /script.sh
+RUN chmod 777 /script.sh
+
 EXPOSE 22/tcp 80/tcp
 
 COPY ./docker_files/wordpress_base/docker/docker-entrypoint.sh ./docker_files/wordpress_base/docker/wpDiscuz-activate.py /usr/local/bin/
