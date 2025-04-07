@@ -33,6 +33,26 @@ class EmulationAttackerNMAPActions:
                                        ips=ips, index=index,
                                        action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING,
                                        backdoor=False)
+    @staticmethod
+    def TCP_FULL_SCAN(index: int, ips: Optional[List[str]] = None) -> EmulationAttackerAction:
+        """
+        Runs a TCP SYN scan
+
+        :param index: index of the machine to apply the action to
+        :param ips: ips of the machines or subnets to apply the action to
+        :return: the action
+        """
+        id = EmulationAttackerActionId.TCP_FULL_SCAN_HOST
+        if ips is None:
+            ips = []
+
+        cmd = ["sudo nmap -sC -sV --top-ports 1000 " + constants.NMAP.SPEED_ARGS + " "]
+        return EmulationAttackerAction(id=id, name="TCP FULL Scan", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="A TCP FULL scan to detect services on the top 1000 TCP ports",
+                                       ips=ips, index=index,
+                                       action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING,
+                                       backdoor=False)
 
     @staticmethod
     def PING_SCAN(index: int, ips: Optional[List[str]] = None) -> EmulationAttackerAction:
@@ -46,8 +66,8 @@ class EmulationAttackerNMAPActions:
         id = EmulationAttackerActionId.PING_SCAN_HOST
         if ips is None:
             ips = []
-        if index == -1:
-            id = EmulationAttackerActionId.PING_SCAN_ALL
+        # if index == -1:
+        #     id = EmulationAttackerActionId.PING_SCAN_ALL
 
         cmd = ["sudo nmap -sP " + constants.NMAP.SPEED_ARGS + " "]
         return EmulationAttackerAction(id=id, name="Ping Scan", cmds=cmd,

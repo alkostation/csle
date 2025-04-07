@@ -590,3 +590,49 @@ class ShellUtil:
         a.ips = ""
 
         return s_prime
+
+    @staticmethod
+    def openvpn_helper(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Helper for connecting to the OpenVPN server
+
+        :param s: the current state
+        :param a: the openvpn login action
+        :return: s_prime
+        """
+        cmds = [a.cmds[0],]
+
+        Logger.__call__().get_logger().info(
+            f"Running OpenVPN on container: {s.emulation_env_config.containers_config.agent_ip}, commands: "
+            f"{''.join(cmds)}")
+        results = EmulationUtil.execute_ssh_cmds(cmds=cmds, conn=s.emulation_env_config.get_hacker_connection())
+        print(f"Output of OpenVPN Command: {results}")
+        total_time = sum(list(map(lambda x: x[2], results)))
+
+        EmulationUtil.log_measured_action_time(total_time=total_time, action=a,
+                                               emulation_env_config=s.emulation_env_config)
+        return s
+
+    @staticmethod
+    def command_helper(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Helper for connecting to the OpenVPN server
+
+        :param s: the current state
+        :param a: the openvpn login action
+        :return: s_prime
+        """
+        cmds = [a.cmds[0],]
+
+        Logger.__call__().get_logger().info(
+            f"Running Command on container: {s.emulation_env_config.containers_config.agent_ip}, commands: "
+            f"{''.join(cmds)}")
+        results = EmulationUtil.execute_ssh_cmds(cmds=cmds, conn=s.emulation_env_config.get_hacker_connection())
+        print(f"Output of Command: {results}")
+        total_time = sum(list(map(lambda x: x[2], results)))
+
+        EmulationUtil.log_measured_action_time(total_time=total_time, action=a,
+                                               emulation_env_config=s.emulation_env_config)
+        return s
+    
+    

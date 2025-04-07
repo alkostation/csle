@@ -103,6 +103,11 @@ class CONTAINER_IMAGES:
     PROXY = "csle_proxy_base"
     EMAIL_DMZ = "csle_int_email_base"
     
+    PUBLIC_DNS = "csle_public_dns_base"
+    CORP_DNS = "csle_corp_dns_base"
+    ZONEMINDER = "csle_zoneminder_base"
+    RTSP_CAM = "csle_rtsp_cam_base"
+    
 class CONTAINER_OS:
     """
     String constants representing OS of different containers
@@ -145,6 +150,11 @@ class CONTAINER_OS:
     EXTERNAL_EMAIL_OS = "ubuntu"
     PROXY_OS = "ubuntu"
     EMAIL_DMZ_OS = "ubuntu"
+
+    PUBLIC_DNS_OS = "ubuntu"
+    CORP_DNS_OS = "ubuntu"
+    ZONEMINDER_OS = "debian"
+    RTSP_CAM_OS = "debian"
 
 class RENDERING:
     """
@@ -788,6 +798,13 @@ class CVE_2015_1427:
     PORT = 9200
     VULNERABILITY_NAME = "cve-2015-1427"
 
+class CVE_2020_24186:
+    """
+    Constants related to CVE-2020-24186
+    """
+    VULNERABILITY_NAME = "cve-2020-24186"
+    SERVICE_NAME = "http"
+    PORT = 80
 
 class SHELLSHOCK:
     """
@@ -1138,6 +1155,8 @@ class EXPLOIT_VULNERABILITES:
     CVE_2015_5602_CVSS = 6
     CVE_2015_1427_CVSS = 9.8
     PENGINE_EXPLOIT_CVSS = 9.8
+    CVE_2020_24186 = "CVE-2020-24186"
+    CVE_2020_24186_CVSS = 10.0
 
 
 class SUB_PROC_ENV:

