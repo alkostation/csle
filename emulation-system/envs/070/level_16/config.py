@@ -2369,7 +2369,9 @@ def default_static_attacker_sequences(subnet_masks: List[str]) -> Dict[str, List
         # ("nmap -sC -sV --top-ports 1000 15.16.3.32", attacker_ip),
         # ("nmap -sC -sV --top-ports 1000 15.16.2.24", attacker_ip),
         # ("nmap -sC -sV --top-ports 1000 15.16.1.14", attacker_ip),
-        EmulationAttackerNMAPActions.TCP_FULL_SCAN(index=-1, ips=["15.16.3.33","15.16.3.32","15.16.2.24","15.16.1.14"]), # !! before the vpn
+        # ? FIX THIS SCAN if we want to specify IPs
+        # EmulationAttackerNMAPActions.TCP_FULL_SCAN(index=-1, ips=["15.16.3.33","15.16.3.32","15.16.2.24","15.16.1.14"]),
+        EmulationAttackerNMAPActions.TCP_SYN_STEALTH_SCAN(index=-1, ips=subnet_masks),
 
         # WPScan
         # ("wpscan --url http://15.16.3.32", attacker_ip),
@@ -2380,8 +2382,12 @@ def default_static_attacker_sequences(subnet_masks: List[str]) -> Dict[str, List
         EmulationAttackerShellActions.DIRB(index=-1),
         
         # wpDiscuz exploit
-        # ("python3 /wpDiscuz_RemoteCodeExec.py -u http://15.16.3.32/ -p /2025/03/17/hello-world/", attacker_ip),
+        # ("python3 /wpDiscuz_RemoteCodeExec.py -u http://15.16.3.32/ -p /YYYY/MM/DD/hello-world/", attacker_ip),
         EmulationAttackerShellActions.CVE_2020_24186_EXPLOIT(index=-1),
+
+        # ? Add here password cracking step if needed, the hash is in the wp server, so the cracking should be done 
+        # ? on the wp machine if we want to track stats like cpu usage
+        # EmulationAttackerShellActions.PASSWORD_CRACKING(index=-1),
 
         # ROOT access + actions
         # ("echo \"./script.sh\" | sshpass -p \"csle@admin-pw_191\" ssh csle_admin@15.16.3.32", attacker_ip),
