@@ -25,11 +25,21 @@ cd /root
 # by-pass conda, run at background:
 /usr/bin/python3 server.py &
 
-MY_IP=`ifconfig | sort -r  | grep 'inet ' | head -n 1  | awk '{print $2}' | cut -d':' -f2`
-echo "My IP=$MY_IP Waiting for the ZM server to start."
+TARGET_IP="15.17.2.22"
+
+while true; do
+    MY_IP=`ifconfig | sort -r  | grep 'inet ' | head -n 3 | tail -1 | awk '{print $2}' | cut -d':' -f2`
+    if [ "$MY_IP" == "$TARGET_IP" ]; then
+        echo "Target IP $TARGET_IP acquired."
+        break
+    else
+        echo "Current IP is $MY_IP. Waiting for IP to become $TARGET_IP..."
+        sleep 2
+    fi
+done
 
 
-N1=`ifconfig | sort -r  | grep 'inet ' | head -n 1  | awk '{print $2}' | cut -d':' -f2 | sed 's/\./\ /g'| cut -d' ' -f1`
+N1=`ifconfig | sort -r  | grep 'inet ' | head -n 3  | tail -1 | awk '{print $2}' | cut -d':' -f2 | sed 's/\./\ /g'| cut -d' ' -f1`
 echo "Nibble 1=$N1"
 
 SRV_IP="$N1.17.2.21"
