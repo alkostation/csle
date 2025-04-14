@@ -211,7 +211,7 @@ class ReconMiddleware:
     @staticmethod
     def execute_openvpn_exit(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
         """
-        Connect to the openvpn server
+        Disconnect to the openvpn server
 
         :param s: the current state
         :param a: the action to take
@@ -222,7 +222,7 @@ class ReconMiddleware:
     @staticmethod
     def execute_wpscan(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
         """
-        Connect to the openvpn server
+        Execute a WordPress scan
 
         :param s: the current state
         :param a: the action to take
@@ -233,7 +233,29 @@ class ReconMiddleware:
     @staticmethod
     def execute_dirb(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
         """
-        Connect to the openvpn server
+        Execute a directory scan
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return ShellUtil.command_helper(s=s, a=a)
+
+    @staticmethod
+    def execute_dnsenum(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Execute a DNS Enumeration
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return ShellUtil.command_helper(s=s, a=a)
+
+    @staticmethod
+    def execute_ffuf(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Execute a FFUF directory scan
 
         :param s: the current state
         :param a: the action to take

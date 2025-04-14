@@ -806,6 +806,14 @@ class CVE_2020_24186:
     SERVICE_NAME = "http"
     PORT = 80
 
+class CVE_2023_26035:
+    """
+    Constants related to CVE_2023_26035
+    """
+    VULNERABILITY_NAME = "cve-2023-26035"
+    SERVICE_NAME = "http"
+    PORT = 80
+
 class SHELLSHOCK:
     """
     Constants related to ShellShock
@@ -1157,6 +1165,8 @@ class EXPLOIT_VULNERABILITES:
     PENGINE_EXPLOIT_CVSS = 9.8
     CVE_2020_24186 = "CVE-2020-24186"
     CVE_2020_24186_CVSS = 10.0
+    CVE_2023_26035 = "CVE-2023-26035"
+    CVE_2023_26035_CVSS = 9.8
 
 
 class SUB_PROC_ENV:

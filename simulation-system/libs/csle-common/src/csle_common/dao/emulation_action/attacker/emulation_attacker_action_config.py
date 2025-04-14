@@ -319,6 +319,9 @@ class EmulationAttackerActionConfig(JSONSerializable):
                             EmulationAttackerActionId.OPENVPN_LOGIN,
                             EmulationAttackerActionId.OPENVPN_EXIT,
                             EmulationAttackerActionId.PASSWORD_CRACK,
+                            EmulationAttackerActionId.DNSENUM,
+                            EmulationAttackerActionId.FFUF,
+                            EmulationAttackerActionId.CVE_2023_26035_EXPLOIT,
                             ]
         nikto_action_ids = [EmulationAttackerActionId.NIKTO_WEB_HOST_SCAN]
         masscan_action_ids = [EmulationAttackerActionId.MASSCAN_HOST_SCAN, EmulationAttackerActionId.MASSCAN_ALL_SCAN]

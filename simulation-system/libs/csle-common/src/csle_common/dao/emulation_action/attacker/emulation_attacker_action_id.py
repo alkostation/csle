@@ -76,3 +76,7 @@ class EmulationAttackerActionId(IntEnum):
     ROOT_COMMANDS = 68
     TCP_FULL_SCAN_HOST = 69
     PASSWORD_CRACK = 70
+    DNSENUM = 71
+    NIKTO = 72
+    FFUF = 73
+    CVE_2023_26035_EXPLOIT = 74

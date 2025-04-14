@@ -104,6 +104,10 @@ class EmulatedAttacker:
             return ReconMiddleware.execute_wpscan(s=s, a=a)
         elif a.id == EmulationAttackerActionId.DIRB:
             return ReconMiddleware.execute_dirb(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.DNSENUM:
+            return ReconMiddleware.execute_dnsenum(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.FFUF:
+            return ReconMiddleware.execute_ffuf(s=s, a=a)
         else:
             raise ValueError("Recon action id:{},name:{} not recognized".format(a.id, a.name))
 
@@ -163,6 +167,8 @@ class EmulatedAttacker:
             return ExploitMiddleware.execute_cve_2020_24186_exploit(s=s, a=a)
         elif a.id == EmulationAttackerActionId.ROOT_COMMANDS:
             return ExploitMiddleware.execute_root_commands(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.CVE_2023_26035_EXPLOIT:
+            return ExploitMiddleware.execute_cve_2023_26035_exploit(s=s, a=a)
         
         else:
             raise ValueError("Exploit action id:{},name:{} not recognized".format(a.id, a.name))
