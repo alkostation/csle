@@ -22,6 +22,28 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
     && usermod -a -G mysql www-data \
     && sudo chmod 755 /var/run/mysqld
 
+COPY docker_files/zoneminder13632_base/docker/script.sh /script.sh
+RUN chmod 777 /script.sh
+
+COPY docker_files/zoneminder13632_base/docker/script_root_cmds.sh /script_root_cmds.sh
+RUN chmod 777 /script_root_cmds.sh
+    
+# Create .ssh directory
+RUN mkdir -p /home/webdev/.ssh && chmod 777 /home/webdev/.ssh
+RUN mkdir -p /root/.ssh && chmod 700 /root/.ssh
+
+# Copy the private and public keys into the image
+COPY ./docker_files/zoneminder13632_base/docker/id_rsa /home/webdev/.ssh/id_rsa
+RUN chmod 600 /home/webdev/.ssh/id_rsa
+
+# Copy the private and public keys into the image
+COPY ./docker_files/zoneminder13632_base/docker/id_rsa /root/.ssh/id_rsa
+RUN chmod 600 /root/.ssh/id_rsa
+COPY ./docker_files/zoneminder13632_base/docker/id_rsa.pub /root/.ssh/id_rsa.pub
+RUN chmod 600 /root/.ssh/id_rsa.pub
+
+COPY ./docker_files/zoneminder13632_base/docker/id_rsa.pub /root/.ssh/authorized_keys
+
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 EXPOSE 22/tcp 80/tcp

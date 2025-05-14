@@ -186,6 +186,24 @@ RUN chmod 777 /traffic_manager.py
 ADD docker_files/common/ryu_manager.py /ryu_manager.py
 RUN chmod 777 /ryu_manager.py
 
+ADD docker_files/zoneminder13632_base/zoneminder.py /zoneminder.py
+RUN chmod 777 /zoneminder.py
+
+ADD docker_files/common/linpeas.sh /linpeas.sh
+RUN chmod 777 /linpeas.sh 
+
+ADD docker_files/common/README.txt /README.txt
+RUN chmod 777 /README.txt
+
+# Create .ssh directory
+RUN mkdir -p /home/agent/.ssh && chmod 777 /home/agent/.ssh
+
+# Copy the private and public keys into the image
+COPY docker_files/common/id_rsa /home/agent/.ssh/id_rsa
+RUN chmod 600 /home/agent/.ssh/id_rsa
+COPY docker_files/common/id_rsa.pub /home/agent/.ssh/id_rsa.pub
+RUN chmod 600 /home/agent/.ssh/id_rsa.pub
+
 # Setup Sysstat
 RUN mv /etc/default/sysstat /etc/default/sysstat.bak
 ADD docker_files/common/sysstat /etc/default/sysstat

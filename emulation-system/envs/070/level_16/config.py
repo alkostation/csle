@@ -2162,7 +2162,6 @@ def default_kafka_config(network_id: int, level: int, version: str, time_step_le
                          kafka_manager_max_workers=collector_constants.GRPC_WORKERS.DEFAULT_MAX_NUM_WORKERS)
     return config
 
-# !! maybe we can define a wp user here that has root capabilities
 def default_users_config(network_id: int) -> UsersConfig:
     """
     Generates default users config
@@ -2359,42 +2358,29 @@ def default_static_attacker_sequences(subnet_masks: List[str]) -> Dict[str, List
     d = {}
     d[constants.STATIC_ATTACKERS.EXPERT] = [
         # NMAP
-        EmulationAttackerNMAPActions.PING_SCAN(index=-1, ips=subnet_masks), # !! before the vpn
+        EmulationAttackerNMAPActions.PING_SCAN(index=-1, ips=subnet_masks),
         
         # Connect to VPN
-        # ("sudo openvpn --config  /vpn-files/openvpn-config-sl001-daniel-cox.ovpn &", attacker_ip),
         EmulationAttackerShellActions.OPENVPN_LOGIN(index=-1),
-
-        # ("nmap -sC -sV --top-ports 1000 15.16.3.33", attacker_ip),
-        # ("nmap -sC -sV --top-ports 1000 15.16.3.32", attacker_ip),
-        # ("nmap -sC -sV --top-ports 1000 15.16.2.24", attacker_ip),
-        # ("nmap -sC -sV --top-ports 1000 15.16.1.14", attacker_ip),
-        # ? FIX THIS SCAN if we want to specify IPs
-        # EmulationAttackerNMAPActions.TCP_FULL_SCAN(index=-1, ips=["15.16.3.33","15.16.3.32","15.16.2.24","15.16.1.14"]),
+        
+        # NMAP FULL SCAN
         EmulationAttackerNMAPActions.TCP_SYN_STEALTH_SCAN(index=-1, ips=subnet_masks),
 
         # WPScan
-        # ("wpscan --url http://15.16.3.32", attacker_ip),
         EmulationAttackerShellActions.WPSCAN(index=-1),
         
         # DIRB
-        # ("dirb http://15.16.3.32 -r", attacker_ip),
         EmulationAttackerShellActions.DIRB(index=-1),
         
         # wpDiscuz exploit
+        # !! REMEMBER TO CHANGE THE DATE OF THE WP POST
         # ("python3 /wpDiscuz_RemoteCodeExec.py -u http://15.16.3.32/ -p /YYYY/MM/DD/hello-world/", attacker_ip),
         EmulationAttackerShellActions.CVE_2020_24186_EXPLOIT(index=-1),
 
-        # ? Add here password cracking step if needed, the hash is in the wp server, so the cracking should be done 
-        # ? on the wp machine if we want to track stats like cpu usage
-        # EmulationAttackerShellActions.PASSWORD_CRACKING(index=-1),
-
         # ROOT access + actions
-        # ("echo \"./script.sh\" | sshpass -p \"csle@admin-pw_191\" ssh csle_admin@15.16.3.32", attacker_ip),
         EmulationAttackerShellActions.ROOT_COMMANDS(index=-1),
 
         # Disconnect VPN
-        # "sudo killall openvpn"
         EmulationAttackerShellActions.OPENVPN_EXIT(index=-1),
     ]
     return d

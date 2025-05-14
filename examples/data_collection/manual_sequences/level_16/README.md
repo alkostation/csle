@@ -1,6 +1,6 @@
 # Adversary Emulation and Traces Collection for Emulation Level 16
 
-This directory contains example scripts for collecting traces and adversary emulation for emulation level 16
+
 
 ## Commands
 

