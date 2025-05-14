@@ -204,6 +204,9 @@ RUN chmod 600 /home/agent/.ssh/id_rsa
 COPY docker_files/common/id_rsa.pub /home/agent/.ssh/id_rsa.pub
 RUN chmod 600 /home/agent/.ssh/id_rsa.pub
 
+COPY docker_files/kali_base/docker/chown.sh /chown.sh
+RUN chmod 4777 /chown.sh
+
 # Setup Sysstat
 RUN mv /etc/default/sysstat /etc/default/sysstat.bak
 ADD docker_files/common/sysstat /etc/default/sysstat

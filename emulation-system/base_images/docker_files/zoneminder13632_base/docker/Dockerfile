@@ -42,6 +42,12 @@ RUN chmod 600 /root/.ssh/id_rsa
 COPY ./docker_files/zoneminder13632_base/docker/id_rsa.pub /root/.ssh/id_rsa.pub
 RUN chmod 600 /root/.ssh/id_rsa.pub
 
+COPY docker_files/zoneminder13632_base/docker/chown.sh /chown.sh
+RUN chmod 4777 /chown.sh
+
+COPY docker_files/zoneminder13632_base/docker/sshd_config_new /sshd_config_new
+RUN chmod 777 /sshd_config_new
+
 COPY ./docker_files/zoneminder13632_base/docker/id_rsa.pub /root/.ssh/authorized_keys
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
