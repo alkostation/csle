@@ -31,10 +31,10 @@ if __name__ == '__main__':
 
     # Attacker actions
     attacker_actions: List[Tuple[str, str]] = [
-        ("cd /; python3 -m http.server 1234 &", attacker_ip),
-        ("pip install bs4", attacker_ip),
-        ("/chown.sh", attacker_ip),
-        ("/chown.sh", zoneminder_server_ip),
+        ("sudo /chown.sh", zoneminder_server_ip),
+        ("sudo /chown.sh", attacker_ip),
+        ("pip3 install bs4", attacker_ip),
+        # ("cd /; python3 -m http.server 1234 &", attacker_ip),
     ]
 
     data = {}
