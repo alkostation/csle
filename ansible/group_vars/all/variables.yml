@@ -59,7 +59,7 @@ csle_config:
     ssh_agent_password: agent
     ssh_agent_username: agent
     version: 0.7.0
-csle_git_repo_url: https://github.com/Limmen/csle
+csle_git_repo_url: https://github.com/Limmen/csle 
 leader_ip: 192.168.82.2
 leader_public_ip: 192.168.82.2
 nginx_content_name: nginx_configuration_content.txt

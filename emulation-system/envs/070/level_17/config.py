@@ -1678,8 +1678,6 @@ def default_static_attacker_sequences(subnet_masks: List[str]) -> Dict[str, List
     """
     d = {}
     d[constants.STATIC_ATTACKERS.EXPERT] = [
-        EmulationAttackerShellActions.INSTALL_TOOLS(index=-1),
-
         EmulationAttackerShellActions.DNSENUM(index=-1),
 
         EmulationAttackerNMAPActions.TCP_CON_NON_STEALTH_SCAN(index=-1, ips=subnet_masks),

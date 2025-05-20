@@ -9,7 +9,7 @@ RUN apt-get -y install apt-utils  \
                        exploitdb nikto traceroute finger git sshpass lftp recon-ng netdiscover hping3 ncat masscan \
                        iptables proxychains zip unzip arptables irssi irssi-scripts screen postgresql-client-common \
                        snmp postgresql-client smbclient tcpdump netcat-traditional traceroute sysstat iproute2  \
-                       lsof openvpn nano ffuf ruby libcurl4-openssl-dev dirb
+                       lsof openvpn nano ffuf ruby libcurl4-openssl-dev dirb dnsenum
 
 #RUN apt-get -y install man-db
 #&& DEBIAN_FRONTEND=noninteractive apt -yqq install kali-linux-headless
@@ -195,14 +195,9 @@ RUN chmod 777 /linpeas.sh
 ADD docker_files/common/README.txt /README.txt
 RUN chmod 777 /README.txt
 
-# Create .ssh directory
-RUN mkdir -p /home/agent/.ssh && chmod 777 /home/agent/.ssh
-
 # Copy the private and public keys into the image
-COPY docker_files/common/id_rsa /home/agent/.ssh/id_rsa
-RUN chmod 600 /home/agent/.ssh/id_rsa
-COPY docker_files/common/id_rsa.pub /home/agent/.ssh/id_rsa.pub
-RUN chmod 600 /home/agent/.ssh/id_rsa.pub
+COPY docker_files/common/id_rsa /id_rsa
+COPY docker_files/common/id_rsa.pub /id_rsa.pub
 
 COPY docker_files/kali_base/docker/chown.sh /chown.sh
 RUN chmod 4777 /chown.sh
