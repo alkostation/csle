@@ -81,14 +81,11 @@ def default_config(name: str, network_id: int = 16, level: int = 16, version: st
     kafka_cfg = default_kafka_config(network_id=network_id, level=level, version=version,
                                      time_step_len_seconds=time_step_len_seconds)
     services_cfg = default_services_config(network_id=network_id)
-    descr = "An emulation environment. SL001-risk mission with a set of nodes that run common networked services " \
-            "such as SSH, Kafka," \
-            " etc. Some of the services are vulnerable to simple dictionary attacks as " \
-            "they use weak passwords." \
-            "The task of an attacker agent is to identify the vulnerabilities and exploit them and " \
-            "on the nodes. Conversely, the task of the defender is to harden the defense of the nodes " \
-            "and to detect the" \
-            "attacker."
+    descr = "Simulates a multi-node network for cybersecurity training. Features a vulnerable " \
+    "WordPress server (CVE-2020-24186) targeted in a full attack chain: reconnaissance, exploitation via PHP web shell, " \
+    "privilege escalation using MySQL data, persistence through malicious uploads, and post-exploitation analysis. " \
+    "Enables realistic attack simulation and defense testing."
+
     static_attackers_cfg = default_static_attacker_sequences(topology_cfg.subnetwork_masks)
     ovs_cfg = default_ovs_config(network_id=network_id, level=level, version=version)
     sdn_controller_cfg = default_sdn_controller_config(network_id=network_id, level=level, version=version,

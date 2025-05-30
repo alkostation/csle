@@ -1,5 +1,8 @@
 # Level 16 - SL001 Vulnerable WordPress Plugin Emulated Environment
-ADD DESCRIPTION HERE
+
+This emulation environment simulates a network with multiple nodes running common networked services, designed to support cybersecurity testing and training. At the core of this setup is a vulnerable WordPress server affected by **CVE-2020-24186**, which serves as the primary target for the attacker agent. 
+
+The attack workflow includes multiple stages: *Reconnaissance* (network and host mapping, connecting to an OpenVPN server, and web enumeration using tools like `dirb` and `wpscan`), *Exploitation* (uploading a PHP web shell via a vulnerable image upload plugin), *Privilege Escalation* (extracting and cracking user hashes from the MySQL database, and upgrading the reverse shell), *Persistence* (planting a malicious PHP shell in the `/wp-content/uploads/` directory), and *Post-Exploitation* (gathering host information, dumping WordPress user data, and disconnecting from the VPN). This environment provides a comprehensive scenario for simulating real-world attack techniques and studying the corresponding security responses.
 
 - Number of nodes: 15
 - IDS: Yes (Snort)
@@ -13,36 +16,86 @@ ADD DESCRIPTION HERE
 <img src="env.png" width="600">
 </p>
 
-## How To Use The Environment
-In order to work with this emulated environment you have to follow these steps:
+## How to Use the Environment
 
-1. change the date 
+To work with this emulated environment, follow the steps below:
 
-2. make install 
+### 1. Prepare the Exploit
 
-1. Start the emulation with the command: 
+Review the `CVE_2020_24186_EXPLOIT()` function located in:
+
+```bash
+simulation-system/libs/csle-common/src/csle_common/dao/emulation_action/attacker/emulation_attacker_shell_actions.py
+```
+
+Update the date as described in the function. Inline comments will guide you through the required modifications.
+
+### 2. Install the Environment
+
+Navigate to the `level16` environment directory and run:
+
+```bash
+make install
+```
+
+### 3. Start the Emulation
+
+Begin the emulation with:
+
 ```bash
 csle start csle-level16-070
 ```
 
-2. Some routes between the containers will not work after the env is started, so you have to execute this command to fix them. This command will manually execute a list of action that are going to modify the iptables in the containers and that will allow the correct communication between all the containers.
+### 4. Fix Container Networking
+
+After starting the environment, some container routes may be misconfigured due to limitations in the CSLE configuration system. Fix this by running:
+
 ```bash
 python3 $PATH_TO_CSLE_FOLDER/examples/data_collection/manual_sequences/level_16/run.py
 ```
 
-3. To execute the attack sequence run the command:
+This script applies the necessary `iptables` rules to enable proper container communication.
+
+### 5. Execute the Attack Sequence
+
+To run the attack:
+
 ```bash
 python3 $PATH_TO_CSLE_FOLDER/examples/data_collection/static_sequences/level_16/run.py
 ```
 
-## NOTE TO ADD
-- The current implementation supports only one excution
+---
 
+## Troubleshooting
 
+If the emulation fails to start, clean up the environment with:
 
+```bash
+csle stop csle-level16-070
+csle clean csle-level16-070
+```
 
+> ⚠️ **Note**: This environment supports only one execution at a time. Residual IP assignments from previous runs may interfere with the exploit.
 
+If the issue persists, reset the `metastore`:
 
+```bash
+cd /csle/metastore
+make clean
+make all
+```
+
+This will remove all stored database information. You will need to:
+
+1. Reinstall the desired emulation environment.
+2. Rebuild the management website manually:
+
+```bash
+cd /clse/ansible
+ansible-playbook --ask-become-pass install_management_system.yml
+```
+
+After completing these steps, you should be able to access the web interface again.
 
 ## Useful commands
 
