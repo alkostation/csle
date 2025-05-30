@@ -54,7 +54,7 @@ def run() -> None:
 
     em_statistic = None
     Emulator.run_action_sequences(emulation_env_config=emulation_env_config, attacker_sequence=attacker_sequence,
-                                  defender_sequence=defender_sequence, repeat_times=5,      # Change repeat time to change how many times the attacker sequence should run
+                                  defender_sequence=defender_sequence, repeat_times=5000,      # Change repeat time to change how many times the attacker sequence should run
                                   sleep_time=emulation_env_config.kafka_config.time_step_len_seconds,
                                   descr="Intrusion data collected against expert attacker",
                                   save_emulation_traces_every=1,
