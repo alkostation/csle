@@ -13,6 +13,7 @@
     - name: Add workers to create_cluster.sql file
       shell: echo  SELECT "citus_add_node('{{ item }}', {{ citus_port }});" >> "/home/{{ user }}/csle/metastore/create_cluster.sql"
       loop: "{{ groups['worker'] }}"
+      when: groups['worker'] is defined and groups['worker'] | length > 0
 
     - name: Copy create_tables.sql script to postgres home
       become: true

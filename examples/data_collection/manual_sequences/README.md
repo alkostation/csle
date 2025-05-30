@@ -6,10 +6,13 @@ adversary are configured manually.
 ## Contents
 
 - Level 9: [./level_9](level_9): this directory contains example scripts for collecting traces from emulation level 9
+- Level 16: [./level_16](level_16): this directory contains example scripts for collecting traces from emulation level 16
 
 ## Author & Maintainer
 
 Kim Hammar <kimham@kth.se>
+Marco Campione <campione@kth.se>
+Mateus Monteiro Marinheiro <mateusma@kth.se>
 
 ## Copyright and license
 

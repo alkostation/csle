@@ -68,3 +68,15 @@ class EmulationAttackerActionId(IntEnum):
     CVE_2015_5602_PRIV_ESC = 60
     STOP = 61
     CONTINUE = 62
+    CVE_2020_24186_EXPLOIT = 63
+    WPSCAN = 64
+    DIRB = 65
+    OPENVPN_LOGIN = 66
+    OPENVPN_EXIT = 67
+    ROOT_COMMANDS = 68
+    TCP_FULL_SCAN_HOST = 69
+    PASSWORD_CRACK = 70
+    DNSENUM = 71
+    NIKTO = 72
+    FFUF = 73
+    CVE_2023_26035_EXPLOIT = 74

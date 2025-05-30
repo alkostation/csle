@@ -9,7 +9,7 @@ RUN apt-get -y install apt-utils  \
                        exploitdb nikto traceroute finger git sshpass lftp recon-ng netdiscover hping3 ncat masscan \
                        iptables proxychains zip unzip arptables irssi irssi-scripts screen postgresql-client-common \
                        snmp postgresql-client smbclient tcpdump netcat-traditional traceroute sysstat iproute2  \
-                       lsof
+                       lsof openvpn nano ffuf ruby libcurl4-openssl-dev dirb dnsenum
 
 #RUN apt-get -y install man-db
 #&& DEBIAN_FRONTEND=noninteractive apt -yqq install kali-linux-headless
@@ -32,13 +32,13 @@ RUN service ssh start
 RUN git clone https://github.com/Limmen/vulscan scipag_vulscan &&\
     ln -s `pwd`/scipag_vulscan /usr/share/nmap/scripts/vulscan
 
-# NMAP nmap-vulners
-RUN git clone https://github.com/Limmen/nmap-vulners &&\
-    cp nmap-vulners/vulners.nse /usr/share/nmap/scripts/ &&\
-    nmap --script-updatedb
+# # NMAP nmap-vulners
+# RUN git clone https://github.com/Limmen/nmap-vulners &&\
+#     cp nmap-vulners/vulners.nse /usr/share/nmap/scripts/ &&\
+#     nmap --script-updatedb
 
 # SecLists
-RUN git clone https://github.com/Limmen/SecLists
+RUN git clone --depth 1 https://github.com/danielmiessler/SecLists.git
 
 # 1. Alias
 # 2. Setup root passwd
@@ -144,6 +144,16 @@ RUN chmod 777 /pengine_exploit.sh
 ADD docker_files/common/heartbleed_exploit.py /heartbleed_exploit.py
 RUN chmod 777 /heartbleed_exploit.py
 
+# CVE-2020-24186 Wordpress wpDiscuz plugin Exploit
+ADD docker_files/common/wpDiscuz_RemoteCodeExec.py /wpDiscuz_RemoteCodeExec.py
+RUN chmod 777 /wpDiscuz_RemoteCodeExec.py
+
+# VPN file
+ADD docker_files/common/vpn-files/* /vpn-files/
+
+# WPScan
+RUN gem install wpscan 
+
 # Client manager
 ADD docker_files/common/client_manager.py /client_manager.py
 RUN chmod 777 /client_manager.py
@@ -176,6 +186,22 @@ RUN chmod 777 /traffic_manager.py
 ADD docker_files/common/ryu_manager.py /ryu_manager.py
 RUN chmod 777 /ryu_manager.py
 
+ADD docker_files/zoneminder13632_base/zoneminder.py /zoneminder.py
+RUN chmod 777 /zoneminder.py
+
+ADD docker_files/common/linpeas.sh /linpeas.sh
+RUN chmod 777 /linpeas.sh 
+
+ADD docker_files/common/README.txt /README.txt
+RUN chmod 777 /README.txt
+
+# Copy the private and public keys into the image
+COPY docker_files/common/id_rsa /id_rsa
+COPY docker_files/common/id_rsa.pub /id_rsa.pub
+
+COPY docker_files/kali_base/docker/chown.sh /chown.sh
+RUN chmod 4777 /chown.sh
+
 # Setup Sysstat
 RUN mv /etc/default/sysstat /etc/default/sysstat.bak
 ADD docker_files/common/sysstat /etc/default/sysstat
@@ -196,6 +222,8 @@ RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.
 # Spark job
 ADD docker_files/common/spark_job.py /spark_job.py
 RUN chmod 777 /spark_job.py
+
+EXPOSE 4444/tcp
 
 # Add Tini
 ENV TINI_VERSION v0.19.0

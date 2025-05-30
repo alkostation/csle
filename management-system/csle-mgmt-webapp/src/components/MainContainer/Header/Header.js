@@ -4,6 +4,7 @@ import {NavLink, useLocation} from "react-router-dom";
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import CsleSmallLogo from './CsleSmallLogo.png'
+import AInception_Logo from './AInception_Logo.png'
 import serverIp from "../../Common/serverIp";
 import serverPort from "../../Common/serverPort";
 import {
@@ -355,6 +356,8 @@ const Header = (props) => {
                     <h1 className="text-center title">
                         Cyber Security Learning Environment (CSLE)
                         <img src={CsleSmallLogo} alt="CSLE logo" className="img-fluid csleLogo" height="190px"
+                             width="130px" />
+                        <img src={AInception_Logo} alt="AInception logo" className="img-fluid AILogo" height="190px"
                              width="130px" />
                     </h1>
                     <span className="csleVersion">Version: {version}</span>

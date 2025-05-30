@@ -205,6 +205,11 @@ class EmulationAttackerActionConfig(JSONSerializable):
             attacker_actions.append(EmulationAttackerShellActions.CVE_2016_10033_EXPLOIT(index=idx))
             attacker_actions.append(EmulationAttackerShellActions.CVE_2010_0426_PRIV_ESC(index=idx))
             attacker_actions.append(EmulationAttackerShellActions.CVE_2015_5602_PRIV_ESC(index=idx))
+            attacker_actions.append(EmulationAttackerShellActions.CVE_2020_24186_EXPLOIT(index=idx))
+            attacker_actions.append(EmulationAttackerShellActions.WPSCAN(index=idx))
+            attacker_actions.append(EmulationAttackerShellActions.DIRB(index=idx))
+            attacker_actions.append(EmulationAttackerShellActions.OPENVPN_LOGIN(index=idx))
+            attacker_actions.append(EmulationAttackerShellActions.OPENVPN_EXIT(index=idx))
 
         # Subnet actions
         attacker_actions.append(
@@ -255,6 +260,7 @@ class EmulationAttackerActionConfig(JSONSerializable):
         nmap_action_ids = [
             EmulationAttackerActionId.TCP_SYN_STEALTH_SCAN_HOST,
             EmulationAttackerActionId.TCP_SYN_STEALTH_SCAN_ALL,
+            EmulationAttackerActionId.TCP_FULL_SCAN_HOST,
             EmulationAttackerActionId.PING_SCAN_HOST,
             EmulationAttackerActionId.PING_SCAN_ALL,
             EmulationAttackerActionId.UDP_PORT_SCAN_HOST,
@@ -306,7 +312,16 @@ class EmulationAttackerActionConfig(JSONSerializable):
                             EmulationAttackerActionId.CVE_2015_1427_EXPLOIT,
                             EmulationAttackerActionId.CVE_2016_10033_EXPLOIT,
                             EmulationAttackerActionId.CVE_2010_0426_PRIV_ESC,
-                            EmulationAttackerActionId.CVE_2015_5602_PRIV_ESC
+                            EmulationAttackerActionId.CVE_2015_5602_PRIV_ESC,
+                            EmulationAttackerActionId.CVE_2020_24186_EXPLOIT,
+                            EmulationAttackerActionId.WPSCAN,
+                            EmulationAttackerActionId.DIRB,
+                            EmulationAttackerActionId.OPENVPN_LOGIN,
+                            EmulationAttackerActionId.OPENVPN_EXIT,
+                            EmulationAttackerActionId.PASSWORD_CRACK,
+                            EmulationAttackerActionId.DNSENUM,
+                            EmulationAttackerActionId.FFUF,
+                            EmulationAttackerActionId.CVE_2023_26035_EXPLOIT,
                             ]
         nikto_action_ids = [EmulationAttackerActionId.NIKTO_WEB_HOST_SCAN]
         masscan_action_ids = [EmulationAttackerActionId.MASSCAN_HOST_SCAN, EmulationAttackerActionId.MASSCAN_ALL_SCAN]

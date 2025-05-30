@@ -2,6 +2,7 @@ from csle_common.dao.emulation_config.emulation_env_state import EmulationEnvSta
 from csle_common.dao.emulation_action.attacker.emulation_attacker_action import EmulationAttackerAction
 from csle_attacker.emulation.util.nmap_util import NmapUtil
 from csle_attacker.emulation.util.nikto_util import NiktoUtil
+from csle_attacker.emulation.util.shell_util import ShellUtil
 
 
 class ReconMiddleware:
@@ -13,6 +14,17 @@ class ReconMiddleware:
     def execute_tcp_syn_stealth_scan(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
         """
         Performs a TCP SYN Stealth Scan action
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return NmapUtil.nmap_scan_action_helper(s=s, a=a)
+    
+    @staticmethod
+    def execute_tcp_full_scan(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Performs a TCP FULL Scan action
 
         :param s: the current state
         :param a: the action to take
@@ -184,3 +196,69 @@ class ReconMiddleware:
         :return: s_prime
         """
         return NmapUtil.nmap_scan_action_helper(s=s, a=a, masscan=True)
+
+    @staticmethod
+    def execute_openvpn_login(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Connect to the openvpn server
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return ShellUtil.openvpn_helper(s=s, a=a)
+
+    @staticmethod
+    def execute_openvpn_exit(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Disconnect to the openvpn server
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return ShellUtil.openvpn_helper(s=s, a=a)
+ 
+    @staticmethod
+    def execute_wpscan(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Execute a WordPress scan
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return ShellUtil.command_helper(s=s, a=a)
+    
+    @staticmethod
+    def execute_dirb(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Execute a directory scan
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return ShellUtil.command_helper(s=s, a=a)
+
+    @staticmethod
+    def execute_dnsenum(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Execute a DNS Enumeration
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return ShellUtil.command_helper(s=s, a=a)
+
+    @staticmethod
+    def execute_ffuf(s: EmulationEnvState, a: EmulationAttackerAction) -> EmulationEnvState:
+        """
+        Execute a FFUF directory scan
+
+        :param s: the current state
+        :param a: the action to take
+        :return: s_prime
+        """
+        return ShellUtil.command_helper(s=s, a=a)

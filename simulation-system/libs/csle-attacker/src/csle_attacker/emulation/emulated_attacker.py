@@ -53,6 +53,8 @@ class EmulatedAttacker:
         if a.id == EmulationAttackerActionId.TCP_SYN_STEALTH_SCAN_HOST \
                 or a.id == EmulationAttackerActionId.TCP_SYN_STEALTH_SCAN_ALL:
             return ReconMiddleware.execute_tcp_syn_stealth_scan(s=s, a=a)
+        if a.id == EmulationAttackerActionId.TCP_FULL_SCAN_HOST:
+            return ReconMiddleware.execute_tcp_full_scan(s=s, a=a)
         elif a.id == EmulationAttackerActionId.PING_SCAN_HOST or a.id == EmulationAttackerActionId.PING_SCAN_ALL:
             return ReconMiddleware.execute_ping_scan(s=s, a=a)
         elif a.id == EmulationAttackerActionId.UDP_PORT_SCAN_HOST \
@@ -94,6 +96,18 @@ class EmulatedAttacker:
         elif a.id == EmulationAttackerActionId.FINGER_HOST \
                 or a.id == EmulationAttackerActionId.FINGER_ALL:
             return ReconMiddleware.execute_finger(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.OPENVPN_LOGIN:
+            return ReconMiddleware.execute_openvpn_login(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.OPENVPN_EXIT:
+            return ReconMiddleware.execute_openvpn_exit(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.WPSCAN:
+            return ReconMiddleware.execute_wpscan(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.DIRB:
+            return ReconMiddleware.execute_dirb(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.DNSENUM:
+            return ReconMiddleware.execute_dnsenum(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.FFUF:
+            return ReconMiddleware.execute_ffuf(s=s, a=a)
         else:
             raise ValueError("Recon action id:{},name:{} not recognized".format(a.id, a.name))
 
@@ -149,6 +163,13 @@ class EmulatedAttacker:
             return ExploitMiddleware.execute_cve_2010_0426_exploit(s=s, a=a)
         elif a.id == EmulationAttackerActionId.CVE_2015_5602_PRIV_ESC:
             return ExploitMiddleware.execute_cve_2015_5602_exploit(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.CVE_2020_24186_EXPLOIT:
+            return ExploitMiddleware.execute_cve_2020_24186_exploit(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.ROOT_COMMANDS:
+            return ExploitMiddleware.execute_root_commands(s=s, a=a)
+        elif a.id == EmulationAttackerActionId.CVE_2023_26035_EXPLOIT:
+            return ExploitMiddleware.execute_cve_2023_26035_exploit(s=s, a=a)
+        
         else:
             raise ValueError("Exploit action id:{},name:{} not recognized".format(a.id, a.name))
 
@@ -169,6 +190,8 @@ class EmulatedAttacker:
             return PostExploitMiddleware.execute_install_tools(s=s, a=a)
         if a.id == EmulationAttackerActionId.SSH_BACKDOOR:
             return PostExploitMiddleware.execute_ssh_backdoor(s=s, a=a)
+        if a.id == EmulationAttackerActionId.PASSWORD_CRACK:
+            return PostExploitMiddleware.execute_password_cracking_command(s=s, a=a)
         else:
             raise ValueError("Post-expoit action id:{},name:{} not recognized".format(a.id, a.name))
 

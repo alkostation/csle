@@ -3734,23 +3734,24 @@ class ClusterController:
                 ip=ip, port=constants.GRPC_SERVERS.CLUSTER_MANAGER_PORT,
                 emulation=execution.emulation_name, ip_first_octet=execution.ip_first_octet)
 
+        # TODO: remove this steps
         current_step += 1
-        Logger.__call__().get_logger().info(f"-- Step {current_step}/{steps}: Create OVS switches --")
-        for ip in physical_servers:
-            Logger.__call__().get_logger().info(f"Creating OVS switches on containers in "
-                                                f"emulation: {execution.emulation_env_config.name} on server: {ip}")
-            ClusterController.create_ovs_switches(
-                ip=ip, port=constants.GRPC_SERVERS.CLUSTER_MANAGER_PORT,
-                emulation=execution.emulation_name, ip_first_octet=execution.ip_first_octet)
+        Logger.__call__().get_logger().info(f"-- Step {current_step}/{steps}: Create OVS switches -- SKIPPED")
+        # for ip in physical_servers:
+        #     Logger.__call__().get_logger().info(f"Creating OVS switches on containers in "
+        #                                         f"emulation: {execution.emulation_env_config.name} on server: {ip}")
+        #     ClusterController.create_ovs_switches(
+        #         ip=ip, port=constants.GRPC_SERVERS.CLUSTER_MANAGER_PORT,
+        #         emulation=execution.emulation_name, ip_first_octet=execution.ip_first_octet)
 
         current_step += 1
-        Logger.__call__().get_logger().info(f"-- Step {current_step}/{steps}: Update OVS switches --")
-        for ip in physical_servers:
-            Logger.__call__().get_logger().info(f"Updating OVS switches on containers in "
-                                                f"emulation: {execution.emulation_env_config.name} on server: {ip}")
-            ClusterController.create_ovs_switches(
-                ip=ip, port=constants.GRPC_SERVERS.CLUSTER_MANAGER_PORT,
-                emulation=execution.emulation_name, ip_first_octet=execution.ip_first_octet)
+        Logger.__call__().get_logger().info(f"-- Step {current_step}/{steps}: Update OVS switches -- SKIPPED")
+        # for ip in physical_servers:
+        #     Logger.__call__().get_logger().info(f"Updating OVS switches on containers in "
+        #                                         f"emulation: {execution.emulation_env_config.name} on server: {ip}")
+        #     ClusterController.create_ovs_switches(
+        #         ip=ip, port=constants.GRPC_SERVERS.CLUSTER_MANAGER_PORT,
+        #         emulation=execution.emulation_name, ip_first_octet=execution.ip_first_octet)
 
         current_step += 1
         Logger.__call__().get_logger().info(f"-- Step {current_step}/{steps}: Creating topology --")
@@ -3762,13 +3763,13 @@ class ClusterController:
                 emulation=execution.emulation_name, ip_first_octet=execution.ip_first_octet)
 
         current_step += 1
-        Logger.__call__().get_logger().info(f"-- Step {current_step}/{steps}: Configure OVS switches --")
-        for ip in physical_servers:
-            Logger.__call__().get_logger().info(f"Configuring OVS switches on containers in "
-                                                f"emulation: {execution.emulation_env_config.name} on server: {ip}")
-            ClusterController.configure_ovs(
-                ip=ip, port=constants.GRPC_SERVERS.CLUSTER_MANAGER_PORT,
-                emulation=execution.emulation_name, ip_first_octet=execution.ip_first_octet)
+        Logger.__call__().get_logger().info(f"-- Step {current_step}/{steps}: Configure OVS switches -- SKIPPED")
+        # for ip in physical_servers:
+        #     Logger.__call__().get_logger().info(f"Configuring OVS switches on containers in "
+        #                                         f"emulation: {execution.emulation_env_config.name} on server: {ip}")
+        #     ClusterController.configure_ovs(
+        #         ip=ip, port=constants.GRPC_SERVERS.CLUSTER_MANAGER_PORT,
+        #         emulation=execution.emulation_name, ip_first_octet=execution.ip_first_octet)
 
         current_step += 1
         Logger.__call__().get_logger().info(f"-- Step {current_step}/{steps}: Start SDN controller monitor --")
